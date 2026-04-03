@@ -18,6 +18,20 @@ export default {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
         serif: ['Merriweather', 'serif']
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        glow: {
+          '0%, 100%': { filter: 'drop-shadow(0 0 10px rgba(212,175,55,0.5))' },
+          '50%': { filter: 'drop-shadow(0 0 25px rgba(212,175,55,0.9))' },
+        }
+      },
+      animation: {
+        float: 'float 3s ease-in-out infinite',
+        glow: 'glow 3s ease-in-out infinite',
       }
     },
   },
