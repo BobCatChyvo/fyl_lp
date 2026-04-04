@@ -26,6 +26,8 @@ export const generateWhatsAppLink = (phoneNumber: string = '1234567890') => {
   message += `━━━━━━━━━━━━━━━━━━━━━━\n\n`;
   message += `¿Me podrían confirmar si tienen disponibilidad y los datos para el pago? ¡Gracias!`;
 
+  console.log('📝 NOTA DE PEDIDO GENERADA:', message);
+
   const encodedMessage = encodeURIComponent(message);
   
   return `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
