@@ -43,5 +43,27 @@ export const productsDB: Product[] = [
     category: 'cafe',
     imageUrl: '/images/cafe.png',
     isFeatured: true,
+  },
+  {
+    id: 'p5',
+    slug: 'pastel-deseo-fugaz',
+    name: 'Pastel Deseo Fugaz',
+    description: 'Un lienzo de azúcar que se desvanece ante el fuego para revelar un mensaje dulce y eterno. Ideal para revelaciones y momentos mágicos.',
+    price: 45.00,
+    category: 'pasteles',
+    imageUrl: '/images/hbdquemado.png',
+    isFeatured: true,
+    allergens: ['Lácteos', 'Gluten', 'Huevo']
+  },
+  {
+    id: 'p6',
+    slug: 'sinfonia-de-pistacho',
+    name: 'Sinfonía de Pistacho',
+    description: 'Texturas de seda con el toque vibrante del limón y la tierra fértil de los mejores pistachos.',
+    price: 38.00,
+    category: 'pasteles',
+    imageUrl: '/images/pistachocitrico.png',
+    isFeatured: true,
+    allergens: ['Lácteos', 'Gluten', 'Frutos Secos (Pistacho)']
   }
 ];
