@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import CartDrawer from "./CartDrawer";
 
 export default function Navbar() {
@@ -28,8 +29,14 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="font-serif text-3xl font-bold tracking-wide text-white">
-          F<span className="text-primary italic">y</span>L
+        <Link href="/" className="relative h-12 w-12 md:h-16 md:w-16 transition-transform hover:scale-105">
+          <Image
+            src="/fyl_logo.png"
+            alt="FyL Logo"
+            fill
+            className="object-contain"
+            priority
+          />
         </Link>
 
         {/* Links de Desktop */}

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ShoppingBag, Trash2, Plus, Minus } from "lucide-react";
 import {
   Sheet,
@@ -38,7 +39,15 @@ export default function CartDrawer() {
       </SheetTrigger>
       
       <SheetContent className="w-full sm:max-w-md bg-background border-l-border flex flex-col shadow-2xl">
-        <SheetHeader>
+        <SheetHeader className="flex flex-row items-center gap-4">
+          <div className="relative h-12 w-12 flex-shrink-0">
+            <Image 
+              src="/fyl_logo.png" 
+              alt="Logo" 
+              fill 
+              className="object-contain"
+            />
+          </div>
           <SheetTitle className="text-white font-serif text-3xl">Tu Pedido</SheetTitle>
         </SheetHeader>
 

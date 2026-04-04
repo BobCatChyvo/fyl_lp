@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { productsDB } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
@@ -33,12 +34,16 @@ export default function Home() {
             Descubre una experiencia sensorial donde la repostería clásica se encuentra con aromas botánicos frescos.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-in fade-in slide-in-from-bottom-16 duration-1000 delay-500">
-            <Button size="lg" className="bg-primary hover:bg-[hsl(347,79%,45%)] text-white px-10 py-8 text-lg rounded-full font-bold shadow-xl shadow-primary/20 transition-transform hover:scale-105">
-              Explorar Catálogo
-            </Button>
-            <Button size="lg" variant="outline" className="border-secondary text-secondary hover:bg-secondary/10 px-10 py-8 text-lg rounded-full font-bold transition-transform hover:scale-105">
-              Nuestra Historia
-            </Button>
+            <Link href="/catalog">
+              <Button size="lg" className="bg-primary hover:bg-[hsl(347,79%,45%)] text-white px-10 py-8 text-lg rounded-full font-bold shadow-xl shadow-primary/20 transition-transform hover:scale-105">
+                Explorar Catálogo
+              </Button>
+            </Link>
+            <Link href="/about">
+              <Button size="lg" variant="outline" className="border-secondary text-secondary hover:bg-secondary/10 px-10 py-8 text-lg rounded-full font-bold transition-transform hover:scale-105">
+                Nuestra Historia
+              </Button>
+            </Link>
           </div>
         </div>
         
