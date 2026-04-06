@@ -20,7 +20,8 @@ if (typeof window !== "undefined") {
   console.log("Firebase Config Status:", {
     hasApiKey: !!firebaseConfig.apiKey,
     projectId: firebaseConfig.projectId,
-    isConfigValid: isConfigValid
+    isConfigValid: isConfigValid,
+    isProduction: process.env.NODE_ENV === "production"
   });
 }
 
@@ -29,7 +30,13 @@ const app = isConfigValid
   : null;
 
 if (!app && typeof window !== "undefined") {
-  console.error("Firebase no se pudo inicializar. Revisa tus variables de entorno en .env.local y REINICIA el servidor.");
+  const isProd = process.env.NODE_ENV === "production";
+  console.error("Firebase no se pudo inicializar.");
+  if (isProd) {
+    console.error("⚠️ PRODUCCIÓN: Asegúrate de configurar GitHub Secrets (NEXT_PUBLIC_FIREBASE_*) en tu repositorio.");
+  } else {
+    console.error("⚠️ DESARROLLO: Revisa tu .env.local y REINICIA el servidor (npm run dev).");
+  }
 }
 
 const auth = app ? getAuth(app) : null;
@@ -40,4 +47,23 @@ const analytics = app && typeof window !== "undefined"
   ? isSupported().then(yes => yes ? getAnalytics(app) : null)
   : null;
 
-export { app, auth, db, analytics };
+import { doc, collection, setDoc } from "firebase/firestore";
+
+// Test Connection (Costo $0 - solo para verificar configuración)
+async function testFirebaseConnection() {
+  if (!db) return { success: false, error: "Database not initialized" };
+  try {
+    const testDoc = doc(collection(db, "_test_connection"), "ping");
+    await setDoc(testDoc, { 
+      timestamp: new Date().toISOString(), 
+      status: "ok",
+      context: typeof window !== "undefined" ? "browser" : "server"
+    });
+    return { success: true };
+  } catch (err: any) {
+    console.error("Firebase Test Error:", err);
+    return { success: false, error: err.message };
+  }
+}
+
+export { app, auth, db, analytics, testFirebaseConnection };

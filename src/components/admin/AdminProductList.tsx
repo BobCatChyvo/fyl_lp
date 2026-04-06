@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { collection, onSnapshot, query, deleteDoc, doc, orderBy } from "firebase/firestore";
 import { db } from "@/lib/firebase/config";
-import { Trash2, Edit } from "lucide-react";
+import { Trash2, Edit, RefreshCw } from "lucide-react";
 
 interface AdminProductListProps {
   onEdit: (product: any) => void;
@@ -62,46 +62,77 @@ export default function AdminProductList({ onEdit }: AdminProductListProps) {
   if (loading) return <div className="text-center py-10">Cargando inventario...</div>;
 
   return (
-    <div className="bg-card rounded-3xl border border-border/50 overflow-hidden shadow-xl">
-      <div className="p-6 border-b border-border">
-        <h3 className="font-serif text-xl font-bold text-white">Inventario (Lectura de Firestore)</h3>
+    <div className="bg-card rounded-[2.5rem] border border-border/40 overflow-hidden shadow-2xl backdrop-blur-md">
+      <div className="p-8 border-b border-border/20 bg-white/[0.02]">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="font-serif text-2xl font-bold text-white tracking-tight">Inventario Maestro</h3>
+            <p className="text-[10px] text-textMuted uppercase tracking-widest mt-1">Sincronizado con Firestore Cloud</p>
+          </div>
+          <div className="px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
+            <span className="text-[9px] font-black text-primary uppercase tracking-tighter">Live Database</span>
+          </div>
+        </div>
       </div>
+      
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead>
-            <tr className="bg-background text-textMuted text-[10px] uppercase tracking-widest">
-              <th className="px-6 py-4">Producto</th>
-              <th className="px-6 py-4">Precio ($)</th>
-              <th className="px-6 py-4 text-center">Acciones</th>
+            <tr className="bg-background/40 text-white/30 text-[9px] uppercase tracking-[0.2em] font-black">
+              <th className="px-8 py-5">Producto & Identidad</th>
+              <th className="px-8 py-5">Inversión ($)</th>
+              <th className="px-8 py-5 text-center">Acciones</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-border/40 text-white/90">
+          <tbody className="divide-y divide-border/10">
             {products.map((product) => (
-              <tr key={product.id} className="hover:bg-background/20 transition-colors">
-                <td className="px-6 py-4 font-bold">{product.name}</td>
-                <td className="px-6 py-4 font-mono text-primary font-bold">
-                  ${Number(product.price).toFixed(2)}
+              <tr key={product.id} className="group hover:bg-white/[0.03] transition-all duration-300">
+                <td className="px-8 py-6">
+                  <div className="flex flex-col">
+                    <span className="text-white font-bold group-hover:text-primary transition-colors text-sm">{product.name}</span>
+                    <span className="text-[10px] text-textMuted font-mono opacity-60 mt-1">{product.category}</span>
+                  </div>
                 </td>
-                <td className="px-6 py-4 flex gap-4 justify-center">
-                  <button 
-                    onClick={() => onEdit(product)} 
-                    className="p-2 text-white hover:bg-white/10 rounded-lg transition-colors border border-border/50"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
-                  <button 
-                    onClick={() => handleDelete(product.id)} 
-                    className="p-2 text-primary hover:bg-primary/20 rounded-lg transition-colors border border-primary/30"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                <td className="px-8 py-6">
+                  <div className="flex flex-col">
+                    <span className="text-primary font-black text-lg font-mono">
+                      ${Number(product.price).toFixed(2)}
+                    </span>
+                    {product.isFeatured && (
+                      <span className="text-[8px] text-secondary font-black uppercase tracking-widest mt-1">✨ Destacado</span>
+                    )}
+                  </div>
+                </td>
+                <td className="px-8 py-6">
+                  <div className="flex gap-3 justify-center">
+                    <button 
+                      onClick={() => onEdit(product)} 
+                      className="p-3 text-white/50 hover:text-white hover:bg-white/10 rounded-xl transition-all border border-transparent hover:border-white/10 group-hover:scale-110 active:scale-90"
+                      title="Editar pieza"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(product.id)} 
+                      className="p-3 text-red-500/40 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all border border-transparent hover:border-red-500/20 group-hover:scale-110 active:scale-90 shadow-lg shadow-transparent hover:shadow-red-500/10"
+                      title="Retirar del catálogo"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
             {products.length === 0 && (
               <tr>
-                <td colSpan={3} className="text-center py-12 text-textMuted italic">
-                  Aún no tienes productos. ¡Añade el primero arriba!
+                <td colSpan={3} className="text-center py-24 px-8">
+                  <div className="flex flex-col items-center gap-4 opacity-40">
+                    <RefreshCw className="w-8 h-8 animate-spin text-primary" />
+                    <p className="text-textMuted text-sm italic font-serif">
+                      Aún no hay creaciones registradas en la nube. <br/>
+                      Añade tu primer producto artesanal arriba.
+                    </p>
+                  </div>
                 </td>
               </tr>
             )}
