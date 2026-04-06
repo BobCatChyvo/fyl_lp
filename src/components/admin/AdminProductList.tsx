@@ -51,7 +51,7 @@ export default function AdminProductList({ onEdit }: AdminProductListProps) {
   if (loading) return <div className="text-center py-10">Cargando inventario...</div>;
 
   return (
-    <div className="bg-card rounded-3xl border border-border mt-12 overflow-hidden shadow-xl">
+    <div className="bg-card rounded-3xl border border-border/50 overflow-hidden shadow-xl">
       <div className="p-6 border-b border-border">
         <h3 className="font-serif text-xl font-bold text-white">Inventario (Lectura de Firestore)</h3>
       </div>

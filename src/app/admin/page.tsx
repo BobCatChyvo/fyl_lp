@@ -27,11 +27,11 @@ export default function AdminPage() {
           <span className="text-primary font-sans tracking-[0.3em] uppercase text-xs font-bold mb-4 block">
             ADMINISTRACIÓN (Costo $0)
           </span>
-          <h1 className="font-serif text-5xl md:text-6xl font-bold text-white mb-6">
+          <h1 className="font-serif text-4xl md:text-5xl font-bold text-white mb-4">
             Gestión de Datos
           </h1>
-          <p className="text-textMuted text-lg leading-relaxed">
-            Eres libre de cambiar los precios, nombres y descripciones de todos los productos en tiempo real.
+          <p className="text-textMuted text-base leading-relaxed max-w-lg">
+            Control total sobre el inventario en tiempo real. Modifica precios, nombres y descripciones con efecto inmediato en el catálogo.
           </p>
         </div>
         
@@ -52,15 +52,15 @@ export default function AdminPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        <div className="lg:col-span-1 sticky top-32 h-fit">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="lg:col-span-5 sticky top-32 h-fit">
           <ProductForm 
             onSuccess={handleSuccess} 
             productToEdit={editingProduct} 
           />
         </div>
 
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-7">
           <AdminProductList onEdit={handleEdit} />
           <div className="mt-8 p-6 bg-primary/10 border border-primary/20 rounded-2xl">
             <h4 className="text-primary font-bold mb-2">💡 Nota de Configuración:</h4>
