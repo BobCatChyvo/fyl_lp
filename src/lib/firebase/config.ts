@@ -11,9 +11,14 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Inicializar Firebase (Costo $0 - Solo Auth y Firestore)
-const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+// Inicializar Firebase (Solo si la configuración está completa para evitar errores en build)
+const isConfigValid = firebaseConfig.apiKey && firebaseConfig.apiKey !== "undefined";
+
+const app = isConfigValid 
+  ? (getApps().length > 0 ? getApp() : initializeApp(firebaseConfig)) 
+  : null;
+
+const auth = app ? getAuth(app) : null as any;
+const db = app ? getFirestore(app) : null as any;
 
 export { app, auth, db };
