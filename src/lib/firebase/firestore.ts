@@ -15,6 +15,7 @@ import { db } from "./config";
 // --- PRODUCTOS ---
 
 export async function getAllProducts() {
+  if (!db) return [];
   const productsCol = collection(db, "products");
   const productSnapshot = await getDocs(productsCol);
   const productList = productSnapshot.docs.map((doc) => ({
@@ -25,6 +26,7 @@ export async function getAllProducts() {
 }
 
 export async function getProductById(id: string) {
+  if (!db) return null;
   const productRef = doc(db, "products", id);
   const productSnap = await getDoc(productRef);
   if (productSnap.exists()) {
@@ -37,6 +39,7 @@ export async function getProductById(id: string) {
 // --- PEDIDOS (ORDERS) ---
 
 export async function createOrder(userId: string, cartItems: any[], total: number) {
+  if (!db) return null;
   const orderRef = doc(collection(db, "orders"));
   const orderData = {
     userId,
@@ -50,6 +53,7 @@ export async function createOrder(userId: string, cartItems: any[], total: numbe
 }
 
 export async function getOrdersByUser(userId: string) {
+  if (!db) return [];
   const ordersCol = collection(db, "orders");
   const q = query(ordersCol, where("userId", "==", userId));
   const querySnapshot = await getDocs(q);
