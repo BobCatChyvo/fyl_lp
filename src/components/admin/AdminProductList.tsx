@@ -14,6 +14,10 @@ export default function AdminProductList({ onEdit }: AdminProductListProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!db) {
+      setLoading(false);
+      return;
+    }
     // Sincronización en tiempo real (Costo $0 - lecturas gratuitas moderadas)
     const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -29,6 +33,12 @@ export default function AdminProductList({ onEdit }: AdminProductListProps) {
 
   const handleDelete = async (productId: string) => {
     if (confirm("¿Seguro que quieres borrar este producto?")) {
+      if (!db) {
+        alert("Error: No hay conexión con la base de datos. Verifica tus credenciales.");
+        setLoading(false);
+        return;
+      }
+
       try {
         await deleteDoc(doc(db, "products", productId));
         alert("¡Eliminado de Firebase!");

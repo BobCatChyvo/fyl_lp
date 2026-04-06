@@ -5,6 +5,7 @@ import ProductForm from "@/components/admin/ProductForm";
 import AdminProductList from "@/components/admin/AdminProductList";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { db } from "@/lib/firebase/config";
 
 export default function AdminPage() {
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
@@ -45,6 +46,12 @@ export default function AdminPage() {
         )}
       </div>
 
+      {!db && (
+        <div className="mb-8 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
+          ⚠️ Error: No se ha podido inicializar la base de datos. Verifica tus variables de entorno de Firebase.
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <div className="lg:col-span-1 sticky top-32 h-fit">
           <ProductForm 
@@ -55,6 +62,13 @@ export default function AdminPage() {
 
         <div className="lg:col-span-2">
           <AdminProductList onEdit={handleEdit} />
+          <div className="mt-8 p-6 bg-primary/10 border border-primary/20 rounded-2xl">
+            <h4 className="text-primary font-bold mb-2">💡 Nota de Configuración:</h4>
+            <p className="text-xs text-textMuted leading-relaxed">
+              Si no ves tus productos o recibes errores de conexión, recuerda que debes agregar tus variables de Firebase en 
+              <span className="text-white font-mono mx-1">Settings &gt; Secrets and variables &gt; Actions</span> de tu repositorio en GitHub.
+            </p>
+          </div>
         </div>
       </div>
     </main>

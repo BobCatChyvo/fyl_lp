@@ -63,6 +63,12 @@ export default function ProductForm({ onSuccess, productToEdit }: ProductFormPro
 
     const formData = new FormData(e.currentTarget);
     
+    if (!db) {
+      alert("Error crítico: No se puede conectar con Firebase. Asegúrate de haber configurado los 'Secrets' en GitHub Settings.");
+      setLoading(false);
+      return;
+    }
+
     const productData = {
       name: formData.get("name") as string,
       slug: slug || (formData.get("name") as string).toLowerCase().replace(/ /g, "-"),
