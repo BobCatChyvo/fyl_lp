@@ -4,34 +4,43 @@
 
 @layer base {
   :root {
-    --background: #120E15;
-    --foreground: #FFFFFF;
+    --background: 247 18% 5%; /* #0A090D - Obsidiana */
+    --foreground: 48 22% 97%; /* #F9F8F4 - Lavanda/Hueso para lectura */
     
-    --card: #1A1523;
-    --card-foreground: #FFFFFF;
+    --card: 247 18% 7%; /* Ligeramente más claro para elevación */
+    --card-foreground: 48 22% 97%;
     
-    --popover: #1A1523;
-    --popover-foreground: #FFFFFF;
+    --popover: 247 18% 5%;
+    --popover-foreground: 48 22% 97%;
     
-    --primary: #E11D48;
-    --primary-foreground: #FFFFFF;
+    --primary: 0 100% 60%; /* #FF3333 - Fresa Intenso */
+    --primary-foreground: 0 0% 100%;
     
-    --secondary: #A78BFA;
-    --secondary-foreground: #120E15;
+    --secondary: 351 33% 58%; /* #B76E79 - Rose Gold */
+    --secondary-foreground: 0 0% 100%;
     
-    --muted: #2e263d;
-    --muted-foreground: #D1D5DB;
+    --muted: 247 10% 12%;
+    --muted-foreground: 240 5% 75%;
     
-    --accent: #2e263d;
-    --accent-foreground: #FFFFFF;
+    --accent: 240 67% 94%; /* #E6E6FA - Lavanda Aura */
+    --accent-foreground: 247 18% 5%;
     
-    --destructive: #7f1d1d;
-    --destructive-foreground: #FFFFFF;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: #2e263d;
-    --input: #2e263d;
-    --ring: #E11D48;
-    --radius: 0.5rem;
+    --border: 247 10% 15%; 
+    --input: 247 10% 15%;
+    --ring: 0 100% 60%;
+    --radius: 1.25rem;
+    
+    /* Variables personalizadas para metales */
+    --oro: 46 65% 52%;
+    --platino: 200 5% 89%;
+    --rose-gold: 351 33% 58%;
+    
+    /* Glow utilities */
+    --glow-primary: 0 100% 60% / 0.5;
+    --glow-accent: 240 67% 94% / 0.2;
   }
 }
 
@@ -42,4 +51,46 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Utilerías personalizadas para gradientes metálicos */
+.bg-gold-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #F9E29B 50%, #D4AF37 100%);
+}
+.bg-rose-gradient {
+  background: linear-gradient(135deg, #B76E79 0%, #E6B9BC 50%, #B76E79 100%);
+}
+.bg-platinum-gradient {
+  background: linear-gradient(135deg, #E5E4E2 0%, #FFFFFF 50%, #E5E4E2 100%);
+}
+
+/* Efectos de Brillo (Glow) */
+.glow-primary {
+  box-shadow: 0 0 20px -5px hsl(var(--primary) / 0.5);
+}
+.text-glow-primary {
+  text-shadow: 0 0 10px hsl(var(--primary) / 0.6);
+}
+
+/* Glassmorphism Oscuro Ultra Premium */
+.glass-dark {
+  background: rgba(10, 9, 13, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Imagen con Brillo Perimetral (Fresa) */
+.image-glow {
+  filter: drop-shadow(0 0 15px hsl(var(--primary) / 0.3));
+}
+
+/* Animaciones Globales */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
 }

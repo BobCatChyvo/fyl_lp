@@ -10,24 +10,20 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Utilidad para manejar rutas de imágenes y activos estáticos con el basePath.
- * Añade el prefijo del repositorio (/fyl_lp) siempre, ya que está configurado
- * en next.config.mjs para todos los entornos.
+ * Utilidad para rutas de imágenes/activos estáticos.
+ *
+ * Next.js aplica el basePath (/fyl_lp) de forma AUTOMÁTICA cuando se usa
+ * el componente <Image> de next/image y los <Link> de next/link.
+ * Por eso esta función es un simple pass-through: NO añadimos el prefijo
+ * manualmente para evitar rutas duplicadas como /fyl_lp/fyl_lp/imagen.png
+ *
+ * Si en algún momento necesitas una URL absoluta (para og:image, etc.),
+ * usa process.env.NEXT_PUBLIC_SITE_URL + path directamente.
  */
 export function getImagePath(path: string): string {
   if (!path) return '';
-  
-  // Si la ruta ya es absoluta (http...) no hacemos nada
+  // Las rutas absolutas (http/https) se devuelven sin cambios
   if (path.startsWith('http')) return path;
-  
-  // El basePath está configurado en next.config.mjs
-  const prefix = '/fyl_lp';
-  
-  // Nos aseguramos de que la ruta empiece con /
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  
-  // Si por alguna razón la ruta ya incluye el prefijo, no lo duplicamos
-  if (cleanPath.startsWith(prefix)) return cleanPath;
-  
-  return `${prefix}${cleanPath}`;
+  // Garantizamos que empiece con /
+  return path.startsWith('/') ? path : `/${path}`;
 }

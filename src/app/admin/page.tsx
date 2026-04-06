@@ -1,0 +1,62 @@
+"use client";
+
+import { useState } from "react";
+import ProductForm from "@/components/admin/ProductForm";
+import AdminProductList from "@/components/admin/AdminProductList";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+
+export default function AdminPage() {
+  const [editingProduct, setEditingProduct] = useState<any | null>(null);
+
+  const handleEdit = (product: any) => {
+    setEditingProduct(product);
+    // Hacemos scroll hacia arriba para que el admin vea el formulario
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSuccess = () => {
+    setEditingProduct(null);
+  };
+
+  return (
+    <main className="min-h-screen bg-background py-32 px-6 md:px-12 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
+        <div className="max-w-xl">
+          <span className="text-primary font-sans tracking-[0.3em] uppercase text-xs font-bold mb-4 block">
+            ADMINISTRACIÓN (Costo $0)
+          </span>
+          <h1 className="font-serif text-5xl md:text-6xl font-bold text-white mb-6">
+            Gestión de Datos
+          </h1>
+          <p className="text-textMuted text-lg leading-relaxed">
+            Eres libre de cambiar los precios, nombres y descripciones de todos los productos en tiempo real.
+          </p>
+        </div>
+        
+        {editingProduct && (
+          <Button 
+            onClick={() => setEditingProduct(null)} 
+            variant="outline" 
+            className="border-primary text-primary"
+          >
+            <Plus className="w-4 h-4 mr-2 rotate-45" /> Cancelar Edición
+          </Button>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-1 sticky top-32 h-fit">
+          <ProductForm 
+            onSuccess={handleSuccess} 
+            productToEdit={editingProduct} 
+          />
+        </div>
+
+        <div className="lg:col-span-2">
+          <AdminProductList onEdit={handleEdit} />
+        </div>
+      </div>
+    </main>
+  );
+}

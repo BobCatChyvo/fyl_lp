@@ -10,6 +10,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bobcatchyvo.github.io/fyl_lp"),
   title: "FyL | Pastelería Premium & Artesanal",
   description: "Descubre una experiencia sensorial donde la repostería clásica se encuentra con aromas botánicos frescos. Fresa & Lavanda, Focus Your Life.",
   openGraph: {
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
     siteName: "FyL Pastelería",
     images: [
       {
-        url: "/images/tarta-signature.png",
+        url: "/fyl_lp/images/tarta-signature.png",
         width: 1200,
         height: 630,
         alt: "FyL Premium Cake",
@@ -32,10 +33,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "FyL | Pastelería Premium",
     description: "Repostería de alta gama con ingredientes botánicos.",
-    images: ["/images/tarta-signature.png"],
+    images: ["/fyl_lp/images/tarta-signature.png"],
   },
   icons: {
-    icon: "/favicon.svg",
+    icon: "/fyl_lp/favicon.svg",
   },
 };
 
@@ -46,9 +47,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${inter.variable} ${playfair.variable} font-sans bg-background text-foreground min-h-screen flex flex-col relative`}>
+      <body className={`${inter.variable} ${playfair.variable} font-sans bg-background text-foreground min-h-screen flex flex-col relative antialiased`}>
         <Navbar />
-        {children}
+        <main className="animate-fade-in flex-grow">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

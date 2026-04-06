@@ -24,11 +24,11 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-background/90 backdrop-blur-md border-b border-border py-4 shadow-sm"
+          ? "bg-background/80 backdrop-blur-md border-b border-border/50 py-4 shadow-sm"
           : "bg-transparent py-6"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+      <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="relative h-12 w-12 md:h-16 md:w-16 transition-transform hover:scale-105">
           <Image
@@ -41,11 +41,11 @@ export default function Navbar() {
         </Link>
 
         {/* Links de Desktop */}
-        <div className="hidden md:flex gap-8 items-center font-sans font-medium text-textMuted">
-          <Link href="/catalog" className="hover:text-primary transition-colors">
+        <div className="hidden md:flex gap-12 items-center font-sans font-bold text-foreground/70 tracking-widest text-[10px] uppercase">
+          <Link href="/catalog" className="hover:text-primary transition-colors border-b-2 border-transparent hover:border-primary pb-1">
             Catálogo
           </Link>
-          <Link href="/about" className="hover:text-secondary transition-colors">
+          <Link href="/about" className="hover:text-secondary transition-colors border-b-2 border-transparent hover:border-secondary pb-1">
             Nosotros
           </Link>
         </div>
