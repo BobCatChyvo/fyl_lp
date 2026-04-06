@@ -2,11 +2,16 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Instagram, Facebook, Mail, MapPin, Phone } from "lucide-react";
 import { getImagePath } from "@/lib/utils";
 
 export default function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  // Ocultar Footer en la consola de administración
+  if (pathname === "/admin") return null;
 
   return (
     <footer className="bg-background border-t border-border/50 mt-auto">

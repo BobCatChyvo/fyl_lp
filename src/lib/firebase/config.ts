@@ -1,7 +1,5 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getAnalytics, isSupported } from "firebase/analytics";
+import { getFirestore, doc, collection, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -25,23 +23,12 @@ const configStatus = {
 
 const isConfigValid = configStatus.apiKey && configStatus.projectId && configStatus.appId;
 
-// Always run this debug log in the browser to help identify issues
+// Log de inicialización (solo en navegador)
 if (typeof window !== "undefined") {
-  console.group("🔥 Firebase Initialization Debug");
-  console.log("Environment:", process.env.NODE_ENV);
-  console.log("Config Valid for Init?:", isConfigValid ? "✅ YES" : "❌ NO");
-  console.log("Variables Status:");
-  
-  Object.entries(configStatus).forEach(([key, isValid]) => {
-    console.log(`  - ${key}: ${isValid ? "✅ Creado" : "❌ FALTANTE / INDEFINIDO"}`);
-  });
-
+  console.group("🔥 Firebase Init");
+  console.log("Config válida:", isConfigValid ? "✅" : "❌");
   if (!isConfigValid) {
-    if (process.env.NODE_ENV === "production") {
-      console.warn("⚠️ ALERTA PRODUCCIÓN/GITHUB PAGES: Al menos una variable requerida de Firebase falta. Asegúrate de que las variables están en Github Secrets y se pasan correctamente en tu archivo .github/workflows/deploy.yml (ej. NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }} en el paso de build).");
-    } else {
-      console.warn("⚠️ ALERTA DESARROLLO/LOCAL: Faltan variables. Revisa tu archivo .env.local, asegúrate de que se llama .env.local y no tenga comillas incorrectas o falta de comillas. Tras guardar .env.local debes REINICIAR el servidor con Ctrl+C y correr 'npm run dev' de nuevo.");
-    }
+    console.warn("⚠️ Faltan variables NEXT_PUBLIC_FIREBASE_*. Revisa .env.local o GitHub Secrets.");
   }
   console.groupEnd();
 }
@@ -50,19 +37,11 @@ const app = isConfigValid
   ? (getApps().length > 0 ? getApp() : initializeApp(firebaseConfig)) 
   : null;
 
+const db = app ? getFirestore(app) : null;
+
 if (!app && typeof window !== "undefined") {
   console.error("❌ Firebase no se pudo inicializar debido a que faltan variables de configuración.");
 }
-
-const auth = app ? getAuth(app) : null;
-const db = app ? getFirestore(app) : null;
-
-// Analytics (Solo inicializar en el navegador)
-const analytics = app && typeof window !== "undefined"
-  ? isSupported().then(yes => yes ? getAnalytics(app) : null)
-  : null;
-
-import { doc, collection, setDoc } from "firebase/firestore";
 
 // Test Connection (Costo $0 - solo para verificar configuración)
 async function testFirebaseConnection() {
@@ -81,4 +60,4 @@ async function testFirebaseConnection() {
   }
 }
 
-export { app, auth, db, analytics, testFirebaseConnection };
+export { db, testFirebaseConnection };

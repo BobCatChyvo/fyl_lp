@@ -1,13 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import CartDrawer from "./CartDrawer";
 import { getImagePath } from "@/lib/utils";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Si estamos en la página de administración, no mostramos el Navbar global
+  if (pathname === "/admin") return null;
   
 
 
@@ -29,7 +34,6 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex items-center justify-between">
-        {/* Logo */}
         <Link href="/" className="relative h-12 w-12 md:h-16 md:w-16 transition-transform hover:scale-105">
           <Image
             src={getImagePath("/fyl_logo.png")}

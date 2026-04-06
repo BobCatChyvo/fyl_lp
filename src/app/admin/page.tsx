@@ -4,23 +4,21 @@ import { useState } from "react";
 import ProductForm from "@/components/admin/ProductForm";
 import AdminProductList from "@/components/admin/AdminProductList";
 import { Button } from "@/components/ui/button";
-import { Plus, CheckCircle2, XCircle, RefreshCw } from "lucide-react";
-import { db, testFirebaseConnection } from "@/lib/firebase/config";
+import { Plus, RefreshCw, ArrowLeft, ExternalLink } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { testFirebaseConnection } from "@/lib/firebase/config";
+import { getImagePath } from "@/lib/utils";
 
 export default function AdminPage() {
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
-  const [testStatus, setTestStatus] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
-  const [testError, setTestError] = useState<string | null>(null);
-
   const handleTest = async () => {
-    setTestStatus('testing');
+    console.log("🔄 Iniciando prueba de conexión con Firebase...");
     const res = await testFirebaseConnection();
     if (res.success) {
-      setTestStatus('success');
-      setTimeout(() => setTestStatus('idle'), 3000);
+      console.log("✅ Conexión con Firebase establecida exitosamente.");
     } else {
-      setTestStatus('error');
-      setTestError(res.error);
+      console.error("❌ Error de conexión con Firebase:", res.error);
     }
   };
 
@@ -35,100 +33,92 @@ export default function AdminPage() {
   };
 
   return (
-    <main className="min-h-screen bg-background py-32 px-6 md:px-12 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-6">
-        <div className="max-w-xl">
-          <span className="text-primary font-sans tracking-[0.3em] uppercase text-xs font-bold mb-4 block">
-            ADMINISTRACIÓN (Costo $0)
-          </span>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-white mb-4">
-            Gestión de Datos
-          </h1>
-          <p className="text-textMuted text-base leading-relaxed max-w-lg">
-            Control total sobre el inventario en tiempo real. Modifica precios, nombres y descripciones con efecto inmediato en el catálogo.
-          </p>
-        </div>
-        
-        {editingProduct ? (
-          <Button 
-            onClick={() => setEditingProduct(null)} 
-            variant="outline" 
-            className="border-primary text-primary"
-          >
-            <Plus className="w-4 h-4 mr-2 rotate-45" /> Cancelar Edición
-          </Button>
-        ) : (
-          <Button 
-            onClick={handleTest}
-            disabled={testStatus === 'testing'}
-            variant="outline" 
-            className={`border-white/10 text-xs font-bold uppercase tracking-widest transition-all ${
-              testStatus === 'success' ? 'bg-green-500/20 text-green-400 border-green-500/50' : 
-              testStatus === 'error' ? 'bg-red-500/20 text-red-400 border-red-500/50' : 'hover:bg-white/5'
-            }`}
-          >
-            {testStatus === 'idle' && <><RefreshCw className="w-3 h-3 mr-2" /> Probar Conexión</>}
-            {testStatus === 'testing' && <><RefreshCw className="w-3 h-3 mr-2 animate-spin" /> Verificando...</>}
-            {testStatus === 'success' && <><CheckCircle2 className="w-3 h-3 mr-2" /> Conectado</>}
-            {testStatus === 'error' && <><XCircle className="w-3 h-3 mr-2" /> Fallo (Ver Consola)</>}
-          </Button>
-        )}
+    <main className="min-h-screen bg-[#0d1117] text-white font-sans selection:bg-rose-500/30 overflow-x-hidden">
+      {/* Background Decor */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-rose-500/10 rounded-full blur-[120px]" />
       </div>
 
-      {!db && (
-        <div className="mb-12 p-8 bg-red-500/10 border border-red-500/30 rounded-3xl backdrop-blur-xl relative overflow-hidden group hover:border-red-500/60 transition-all duration-500">
-          <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-40 transition-opacity">
-            <span className="text-4xl">⚠️</span>
-          </div>
-          <h3 className="text-red-400 font-serif text-2xl font-bold mb-3">
-            Base de Datos NO inicializada
-          </h3>
-          <p className="text-textMuted text-sm leading-relaxed mb-6 max-w-2xl">
-            Firebase no ha detectado las credenciales necesarias. Esto detendrá la carga del catálogo y la gestión de productos.
-          </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-black/20 p-5 rounded-2xl border border-white/5">
-              <h4 className="text-white text-[10px] font-black uppercase tracking-widest mb-3 flex items-center gap-2">
-                <span className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" /> Si estás en LOCAL
-              </h4>
-              <ul className="text-[11px] text-textMuted space-y-2 list-disc ml-4">
-                <li>Verifica que el archivo <code className="text-primary">.env.local</code> exista en la raíz.</li>
-                <li>Confirma que las llaves inicien con <code className="text-white">NEXT_PUBLIC_</code></li>
-                <li><span className="text-white font-bold">REINICIA</span> el servidor (<code className="px-1 bg-white/5 rounded">npm run dev</code>).</li>
-              </ul>
-            </div>
+      {/* Header Bar */}
+      <nav className="relative z-30 flex items-center justify-between px-6 lg:px-10 py-6 border-b border-white/5 backdrop-blur-xl bg-black/40">
+        <div className="flex items-center gap-4 lg:gap-6">
+          <Link href="/" className="flex items-center gap-3 relative h-8 lg:h-10 w-10 lg:w-16">
+            <Image 
+              src={getImagePath("/fyl_logo.png")} 
+              alt="Logo" 
+              fill
+              className="object-contain brightness-200"
+              priority
+            />
+          </Link>
+          <div className="h-6 w-[1px] bg-white/10 hidden sm:block" />
+          <span className="text-[9px] lg:text-[10px] font-black tracking-[0.4em] text-white/90 uppercase opacity-70 leading-none">
+            Panel de Distribución <span className="hidden md:inline text-rose-500/50 ml-2">— ADMINISTRACIÓN CENTRAL</span>
+          </span>
+        </div>
+        
+        <div className="flex items-center gap-6">
+          <Link 
+            href="/"
+            className="group flex items-center gap-2 px-4 lg:px-6 py-2.5 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 hover:border-rose-500/20 transition-all active:scale-95"
+          >
+            <span className="text-[8px] lg:text-[9px] font-black uppercase tracking-[0.3em] text-white/40 group-hover:text-white transition-colors">Regresar a Tienda</span>
+            <ExternalLink className="w-3.5 h-3.5 text-white/20 group-hover:text-rose-500 transition-colors" />
+          </Link>
+        </div>
+      </nav>
+
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-0 min-h-[calc(100vh-89px)] overflow-hidden">
+        {/* Left: Product Form (Glassy Area) */}
+        <div className="lg:col-span-4 p-6 lg:p-14 flex flex-col items-center justify-start border-r border-white/5 bg-black/10 overflow-y-auto max-h-[calc(100vh-89px)]">
+          <div className="w-full max-w-md">
+            <ProductForm 
+              onSuccess={handleSuccess} 
+              productToEdit={editingProduct} 
+            />
             
-            <div className="bg-primary/5 p-5 rounded-2xl border border-primary/20">
-              <h4 className="text-primary text-[10px] font-black uppercase tracking-widest mb-3 flex items-center gap-2">
-                <span className="w-2 h-2 bg-primary rounded-full animate-pulse" /> Si ya hiciste DEPLOY
-              </h4>
-              <ul className="text-[11px] text-textMuted space-y-2 list-disc ml-4">
-                <li>Ve a <span className="text-white">GitHub &gt; Settings &gt; Secrets &gt; Actions</span>.</li>
-                <li>Añade <span className="text-white">NEXT_PUBLIC_FIREBASE_API_KEY</span> y el resto.</li>
-                <li><span className="text-white font-bold">RE-LANZA</span> el workflow en la pestaña <span className="text-white">Actions</span>.</li>
-              </ul>
+            <div className="mt-8 pt-8 border-t border-white/5 space-y-3">
+              {editingProduct ? (
+                <button 
+                  onClick={() => setEditingProduct(null)}
+                  className="w-full py-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-rose-500 hover:text-white transition-all shadow-lg shadow-rose-500/5 rotate-1 animate-in zoom-in-95"
+                >
+                  Cancelar Edición en Progreso
+                </button>
+              ) : (
+                <button 
+                  onClick={handleTest}
+                  className="w-full py-3 rounded-xl border border-white/5 text-[9px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white/60 hover:bg-white/5 transition-all flex items-center justify-center gap-2"
+                >
+                  <RefreshCw className="w-3 h-3" /> Estado del Servidor
+                </button>
+              )}
             </div>
           </div>
         </div>
-      )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <div className="lg:col-span-5 sticky top-32 h-fit">
-          <ProductForm 
-            onSuccess={handleSuccess} 
-            productToEdit={editingProduct} 
-          />
-        </div>
+        {/* Right: Inventory Management (Solid Dark Area) */}
+        <div className="lg:col-span-8 p-6 lg:p-16 bg-black/40 backdrop-blur-sm overflow-y-auto">
+          <div className="max-w-6xl mx-auto">
+            <header className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-16 gap-4">
+              <div>
+                <h1 className="font-serif text-5xl lg:text-7xl font-bold tracking-tight mb-4 italic leading-tight">Gestión</h1>
+                <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 border-l border-rose-500 pl-4 py-1">Inventario Activo</h2>
+              </div>
+              
+              <div className="flex gap-4">
+                 <div className="px-4 py-2 rounded-full bg-white/[0.03] border border-white/5 flex items-center gap-2">
+                   <div className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                   <span className="text-[8px] font-black uppercase tracking-widest text-white/50">Sistema en Vivo</span>
+                 </div>
+              </div>
+            </header>
 
-        <div className="lg:col-span-7">
-          <AdminProductList onEdit={handleEdit} />
-          <div className="mt-8 p-6 bg-primary/10 border border-primary/20 rounded-2xl">
-            <h4 className="text-primary font-bold mb-2">💡 Nota de Configuración:</h4>
-            <p className="text-xs text-textMuted leading-relaxed">
-              Si no ves tus productos o recibes errores de conexión, recuerda que debes agregar tus variables de Firebase en 
-              <span className="text-white font-mono mx-1">Settings &gt; Secrets and variables &gt; Actions</span> de tu repositorio en GitHub.
-            </p>
+            <div className="bg-white/[0.01] border border-white/5 rounded-[40px] overflow-hidden backdrop-blur-3xl shadow-2xl relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent pointer-events-none" />
+              <AdminProductList onEdit={handleEdit} />
+            </div>
           </div>
         </div>
       </div>

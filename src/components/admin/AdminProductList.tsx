@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { collection, onSnapshot, query, deleteDoc, doc, orderBy } from "firebase/firestore";
 import { db } from "@/lib/firebase/config";
 import { Trash2, Edit, RefreshCw } from "lucide-react";
+import { getImagePath } from "@/lib/utils";
 
 interface AdminProductListProps {
   onEdit: (product: any) => void;
@@ -45,100 +47,106 @@ export default function AdminProductList({ onEdit }: AdminProductListProps) {
   const handleDelete = async (productId: string) => {
     if (confirm("¿Seguro que quieres borrar este producto?")) {
       if (!db) {
-        alert("Error: No hay conexión con la base de datos. Verifica tus credenciales.");
+        console.error("Error: No hay conexión con la base de datos.");
         setLoading(false);
         return;
       }
 
       try {
         await deleteDoc(doc(db, "products", productId));
-        alert("¡Eliminado de Firebase!");
+        console.log("¡Eliminado de Firebase!");
       } catch (error) {
         console.error("Error al borrar:", error);
       }
     }
   };
 
-  if (loading) return <div className="text-center py-10">Cargando inventario...</div>;
+  if (loading) return (
+    <div className="flex flex-col items-center justify-center py-20 gap-4">
+      <RefreshCw className="w-8 h-8 animate-spin text-rose-500" />
+      <span className="text-[10px] font-black uppercase tracking-widest text-white/20">Cargando Inventario...</span>
+    </div>
+  );
 
   return (
-    <div className="bg-card rounded-[2.5rem] border border-border/40 overflow-hidden shadow-2xl backdrop-blur-md">
-      <div className="p-8 border-b border-border/20 bg-white/[0.02]">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="font-serif text-2xl font-bold text-white tracking-tight">Inventario Maestro</h3>
-            <p className="text-[10px] text-textMuted uppercase tracking-widest mt-1">Sincronizado con Firestore Cloud</p>
-          </div>
-          <div className="px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
-            <span className="text-[9px] font-black text-primary uppercase tracking-tighter">Live Database</span>
-          </div>
-        </div>
-      </div>
-      
-      <div className="overflow-x-auto">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="bg-background/40 text-white/30 text-[9px] uppercase tracking-[0.2em] font-black">
-              <th className="px-8 py-5">Producto & Identidad</th>
-              <th className="px-8 py-5">Inversión ($)</th>
-              <th className="px-8 py-5 text-center">Acciones</th>
+    <div className="overflow-x-auto">
+      <table className="w-full text-left border-collapse">
+        <thead>
+          <tr className="border-b border-white/5 text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
+            <th className="px-8 py-6">Imagen</th>
+            <th className="px-8 py-6">Detalles del Producto</th>
+            <th className="px-8 py-6">Categoría</th>
+            <th className="px-8 py-6">Precio de Venta</th>
+            <th className="px-8 py-6 text-right">Acciones de Gestión</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-white/5">
+          {products.map((product) => (
+            <tr key={product.id} className="group hover:bg-white/[0.02] transition-colors">
+              <td className="px-8 py-6">
+                <div className="w-16 h-16 rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-2xl relative group-hover:border-rose-500/30 transition-all duration-500">
+                  <Image 
+                    src={getImagePath(product.imageUrl || "/placeholder.jpg")} 
+                    alt={product.name} 
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </td>
+              <td className="px-8 py-6">
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-sm font-bold text-white/90 group-hover:text-rose-500 transition-colors">{product.name}</span>
+                  {product.isFeatured && (
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-rose-500/10 border border-rose-500/20 w-fit">
+                      <div className="w-1 h-1 rounded-full bg-rose-500 animate-pulse" />
+                      <span className="text-[8px] text-rose-500 font-extrabold uppercase tracking-widest">Destacado</span>
+                    </div>
+                  )}
+                </div>
+              </td>
+              <td className="px-8 py-6">
+                <div className="inline-flex items-center px-3 py-1 rounded-lg bg-white/[0.03] border border-white/5">
+                  <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
+                    {product.category || "General"}
+                  </span>
+                </div>
+              </td>
+              <td className="px-8 py-6">
+                <span className="text-base font-black text-white/80">
+                  <span className="text-rose-500 mr-0.5 text-xs">$</span>
+                  {Number(product.price).toFixed(2)}
+                </span>
+              </td>
+              <td className="px-8 py-6">
+                <div className="flex gap-3 justify-end">
+                  <button 
+                    onClick={() => onEdit(product)} 
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/10 transition-all group/btn active:scale-90"
+                  >
+                    <Edit className="w-4 h-4 text-white/40 group-hover/btn:text-rose-500 transition-colors" />
+                    <span className="text-[9px] font-black uppercase tracking-wider text-white/20 group-hover/btn:text-white">Editar</span>
+                  </button>
+                  <button 
+                    onClick={() => handleDelete(product.id)} 
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl border border-rose-500/10 bg-rose-500/5 hover:bg-rose-500/20 hover:border-rose-500/40 transition-all group/del active:scale-90"
+                  >
+                    <Trash2 className="w-4 h-4 text-rose-500/40 group-hover/del:text-rose-500 transition-colors" />
+                    <span className="text-[9px] font-black uppercase tracking-wider text-rose-500/20 group-hover/del:text-rose-500">Borrar</span>
+                  </button>
+                </div>
+              </td>
             </tr>
-          </thead>
-          <tbody className="divide-y divide-border/10">
-            {products.map((product) => (
-              <tr key={product.id} className="group hover:bg-white/[0.03] transition-all duration-300">
-                <td className="px-8 py-6">
-                  <div className="flex flex-col">
-                    <span className="text-white font-bold group-hover:text-primary transition-colors text-sm">{product.name}</span>
-                    <span className="text-[10px] text-textMuted font-mono opacity-60 mt-1">{product.category}</span>
-                  </div>
-                </td>
-                <td className="px-8 py-6">
-                  <div className="flex flex-col">
-                    <span className="text-primary font-black text-lg font-mono">
-                      ${Number(product.price).toFixed(2)}
-                    </span>
-                    {product.isFeatured && (
-                      <span className="text-[8px] text-secondary font-black uppercase tracking-widest mt-1">✨ Destacado</span>
-                    )}
-                  </div>
-                </td>
-                <td className="px-8 py-6">
-                  <div className="flex gap-3 justify-center">
-                    <button 
-                      onClick={() => onEdit(product)} 
-                      className="p-3 text-white/50 hover:text-white hover:bg-white/10 rounded-xl transition-all border border-transparent hover:border-white/10 group-hover:scale-110 active:scale-90"
-                      title="Editar pieza"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </button>
-                    <button 
-                      onClick={() => handleDelete(product.id)} 
-                      className="p-3 text-red-500/40 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all border border-transparent hover:border-red-500/20 group-hover:scale-110 active:scale-90 shadow-lg shadow-transparent hover:shadow-red-500/10"
-                      title="Retirar del catálogo"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-            {products.length === 0 && (
-              <tr>
-                <td colSpan={3} className="text-center py-24 px-8">
-                  <div className="flex flex-col items-center gap-4 opacity-40">
-                    <RefreshCw className="w-8 h-8 animate-spin text-primary" />
-                    <p className="text-textMuted text-sm italic font-serif">
-                      Aún no hay creaciones registradas en la nube. <br/>
-                      Añade tu primer producto artesanal arriba.
-                    </p>
-                  </div>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+          ))}
+          {products.length === 0 && (
+            <tr>
+              <td colSpan={5} className="py-20 text-center">
+                <p className="text-[10px] font-black uppercase tracking-widest text-white/20">Aún no hay productos registrados</p>
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }
