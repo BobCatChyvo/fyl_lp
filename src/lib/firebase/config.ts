@@ -13,16 +13,37 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-const isConfigValid = !!firebaseConfig.apiKey && firebaseConfig.apiKey !== "undefined";
+// Check if each variable exists and is not the string "undefined"
+const configStatus = {
+  apiKey: !!firebaseConfig.apiKey && firebaseConfig.apiKey !== "undefined",
+  authDomain: !!firebaseConfig.authDomain && firebaseConfig.authDomain !== "undefined",
+  projectId: !!firebaseConfig.projectId && firebaseConfig.projectId !== "undefined",
+  storageBucket: !!firebaseConfig.storageBucket && firebaseConfig.storageBucket !== "undefined",
+  messagingSenderId: !!firebaseConfig.messagingSenderId && firebaseConfig.messagingSenderId !== "undefined",
+  appId: !!firebaseConfig.appId && firebaseConfig.appId !== "undefined",
+};
 
-// Debug para verificar que las variables carguen (Solo verás la máscara en consola por seguridad)
+const isConfigValid = configStatus.apiKey && configStatus.projectId && configStatus.appId;
+
+// Always run this debug log in the browser to help identify issues
 if (typeof window !== "undefined") {
-  console.log("Firebase Config Status:", {
-    hasApiKey: !!firebaseConfig.apiKey,
-    projectId: firebaseConfig.projectId,
-    isConfigValid: isConfigValid,
-    isProduction: process.env.NODE_ENV === "production"
+  console.group("🔥 Firebase Initialization Debug");
+  console.log("Environment:", process.env.NODE_ENV);
+  console.log("Config Valid for Init?:", isConfigValid ? "✅ YES" : "❌ NO");
+  console.log("Variables Status:");
+  
+  Object.entries(configStatus).forEach(([key, isValid]) => {
+    console.log(`  - ${key}: ${isValid ? "✅ Creado" : "❌ FALTANTE / INDEFINIDO"}`);
   });
+
+  if (!isConfigValid) {
+    if (process.env.NODE_ENV === "production") {
+      console.warn("⚠️ ALERTA PRODUCCIÓN/GITHUB PAGES: Al menos una variable requerida de Firebase falta. Asegúrate de que las variables están en Github Secrets y se pasan correctamente en tu archivo .github/workflows/deploy.yml (ej. NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }} en el paso de build).");
+    } else {
+      console.warn("⚠️ ALERTA DESARROLLO/LOCAL: Faltan variables. Revisa tu archivo .env.local, asegúrate de que se llama .env.local y no tenga comillas incorrectas o falta de comillas. Tras guardar .env.local debes REINICIAR el servidor con Ctrl+C y correr 'npm run dev' de nuevo.");
+    }
+  }
+  console.groupEnd();
 }
 
 const app = isConfigValid 
@@ -30,13 +51,7 @@ const app = isConfigValid
   : null;
 
 if (!app && typeof window !== "undefined") {
-  const isProd = process.env.NODE_ENV === "production";
-  console.error("Firebase no se pudo inicializar.");
-  if (isProd) {
-    console.error("⚠️ PRODUCCIÓN: Asegúrate de configurar GitHub Secrets (NEXT_PUBLIC_FIREBASE_*) en tu repositorio.");
-  } else {
-    console.error("⚠️ DESARROLLO: Revisa tu .env.local y REINICIA el servidor (npm run dev).");
-  }
+  console.error("❌ Firebase no se pudo inicializar debido a que faltan variables de configuración.");
 }
 
 const auth = app ? getAuth(app) : null;
