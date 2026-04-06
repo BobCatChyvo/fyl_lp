@@ -24,6 +24,16 @@ export function getImagePath(path: string): string {
   if (!path) return '';
   // Las rutas absolutas (http/https) se devuelven sin cambios
   if (path.startsWith('http')) return path;
-  // Garantizamos que empiece con /
-  return path.startsWith('/') ? path : `/${path}`;
+
+  // Si estamos en producción (GitHub Pages), e Inicia con /, y NO tiene ya el fyl_lp
+  const basePath = '/fyl_lp';
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  
+  // Si ya tiene el basePath, o si estamos en desarrollo, Next.js lo maneja.
+  // Pero para mayor seguridad en static export, lo forzamos si el entorno es producción
+  if (process.env.NODE_ENV === 'production' && !cleanPath.startsWith(basePath)) {
+    return `${basePath}${cleanPath}`;
+  }
+
+  return cleanPath;
 }

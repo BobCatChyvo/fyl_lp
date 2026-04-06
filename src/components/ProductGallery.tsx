@@ -11,6 +11,10 @@ export default function ProductGallery() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!db) {
+      setLoading(false);
+      return;
+    }
     // Consulta en tiempo real a la colección "products"
     const q = query(collection(db, "products"));
     
