@@ -1,6 +1,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -9,16 +10,34 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Inicializar Firebase (Solo si la configuración está completa para evitar errores en build)
-const isConfigValid = firebaseConfig.apiKey && firebaseConfig.apiKey !== "undefined";
+const isConfigValid = !!firebaseConfig.apiKey && firebaseConfig.apiKey !== "undefined";
+
+// Debug para verificar que las variables carguen (Solo verás la máscara en consola por seguridad)
+if (typeof window !== "undefined") {
+  console.log("Firebase Config Status:", {
+    hasApiKey: !!firebaseConfig.apiKey,
+    projectId: firebaseConfig.projectId,
+    isConfigValid: isConfigValid
+  });
+}
 
 const app = isConfigValid 
   ? (getApps().length > 0 ? getApp() : initializeApp(firebaseConfig)) 
   : null;
 
-const auth = app ? getAuth(app) : null as any;
-const db = app ? getFirestore(app) : null as any;
+if (!app && typeof window !== "undefined") {
+  console.error("Firebase no se pudo inicializar. Revisa tus variables de entorno en .env.local y REINICIA el servidor.");
+}
 
-export { app, auth, db };
+const auth = app ? getAuth(app) : null;
+const db = app ? getFirestore(app) : null;
+
+// Analytics (Solo inicializar en el navegador)
+const analytics = app && typeof window !== "undefined"
+  ? isSupported().then(yes => yes ? getAnalytics(app) : null)
+  : null;
+
+export { app, auth, db, analytics };

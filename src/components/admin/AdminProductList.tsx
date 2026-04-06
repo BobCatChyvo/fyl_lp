@@ -19,13 +19,24 @@ export default function AdminProductList({ onEdit }: AdminProductListProps) {
       return;
     }
     // Sincronización en tiempo real (Costo $0 - lecturas gratuitas moderadas)
-    const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
+    // Sincronización en tiempo real - Más flexible para ver productos sin fecha
+    const q = query(collection(db, "products"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const items = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      console.log(`Firebase: Recibidos ${snapshot.docs.length} productos.`);
+      const items = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          // Fallback para productos sin fecha si alguien los editó a mano
+          createdAt: data.createdAt || { seconds: Date.now() / 1000 },
+        };
+      }).sort((a: any, b: any) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
       setProducts(items);
+      setLoading(false);
+    }, (err) => {
+      console.error("Error al leer admin/products:", err.message);
       setLoading(false);
     });
     return () => unsubscribe();
