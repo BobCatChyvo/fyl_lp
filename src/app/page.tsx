@@ -69,7 +69,7 @@ export default function Home() {
           </div>
         </div>
 
-        <ProductGallery />
+        <ProductGallery featuredOnly={true} />
       </section>
 
       {/* Philosophy Banner - Dark Glassmorphism */}

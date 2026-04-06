@@ -1,7 +1,6 @@
 "use client";
 
-import { productsDB } from "@/data/products";
-import ProductCard from "@/components/ProductCard";
+import ProductGallery from "@/components/ProductGallery";
 import { useState } from "react";
 import { ProductCategory } from "@/types";
 
@@ -15,10 +14,6 @@ const categories: { label: string; value: ProductCategory | "todas" }[] = [
 
 export default function CatalogPage() {
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | "todas">("todas");
-
-  const filteredProducts = selectedCategory === "todas" 
-    ? productsDB 
-    : productsDB.filter(p => p.category === selectedCategory);
 
   return (
     <main className="pt-40 pb-32 px-6 md:px-12 max-w-[1600px] mx-auto min-h-screen">
@@ -53,18 +48,8 @@ export default function CatalogPage() {
         ))}
       </div>
 
-      {/* Grid de Productos Expandido */}
-      {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-40 bg-accent/10 rounded-[3rem] border border-dashed border-border/50">
-          <p className="text-2xl text-muted-foreground italic font-serif">No hay piezas en esta categoría por el momento.</p>
-        </div>
-      )}
+      {/* Grid de Productos Dinámico (Firestore) */}
+      <ProductGallery categoryFilter={selectedCategory !== "todas" ? selectedCategory : undefined} />
     </main>
   );
 }
