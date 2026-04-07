@@ -1,5 +1,6 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore, doc, collection, setDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -38,6 +39,7 @@ const app = isConfigValid
   : null;
 
 const db = app ? getFirestore(app) : null;
+const auth = app ? getAuth(app) : null;
 
 if (!app && typeof window !== "undefined") {
   console.error("❌ Firebase no se pudo inicializar debido a que faltan variables de configuración.");
@@ -60,4 +62,4 @@ async function testFirebaseConnection() {
   }
 }
 
-export { db, testFirebaseConnection };
+export { db, auth, testFirebaseConnection };

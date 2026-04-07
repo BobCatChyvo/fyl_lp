@@ -6,8 +6,9 @@ import { ProductCategory } from "@/types";
 
 const categories: { label: string; value: ProductCategory | "todas" }[] = [
   { label: "Todas las piezas", value: "todas" },
-  { label: "Pasteles", value: "pasteles" },
+  { label: "Diseños", value: "diseños" },
   { label: "Bollería", value: "bolleria" },
+  { label: "Repostería", value: "reposteria" },
   { label: "Postres", value: "postres" },
   { label: "Café", value: "cafe" },
 ];

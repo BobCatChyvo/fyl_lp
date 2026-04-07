@@ -222,5 +222,21 @@ Firebase App Hosting: Esta es la opción más recomendada para Next.js, ya que o
 Proceso: Una vez que tu firebase.json está configurado para frameworksBackend , simplemente ejecutar firebase deploy desplegará tu aplicación Next.js, incluyendo las funciones necesarias para getServerSideProps y API Routes.
 CI/CD: Configurar integración continua/despliegue continuo (ej. GitHub Actions) para desplegar automáticamente al hacer push a la rama principal.
 Siguientes Pasos Sugeridos:
-¿Cómo configurar las Reglas de Seguridad de Cloud Storage para permitir a los administradores subir imágenes y a los clientes leerlas?
-¿Qué estrategia usaríamos para la gestión de estados globales en el panel de administración de Next.js, considerando los datos de Firebase?
+¿Cómo implementaríamos la integración con una pasarela de pagos (ej. Stripe) utilizando Cloud Functions y Next.js API Routes?
+
+5. Sincronización Final y Reglas de Consistencia (Abril 2026)
+
+Estado Actual:
+- Conexión Firebase: Optimizada para no fallar si faltan variables de entorno (manejo de null).
+- Gestión de Auth: Centralizada en `src/lib/firebase/auth.ts` con exportación correcta desde `config.ts`.
+- Validaciones del Formulario: Implementadas en el cliente para asegurar consistencia sensorial.
+
+Reglas de Oro para Nuevos Productos:
+- Categorías Oficiales: `diseños`, `bolleria`, `reposteria`, `postres`, `cafe`.
+- Relato Sensorial: Debe tener entre 60 y 120 caracteres. Menos de 60 se considera insuficiente para la "experiencia FyL".
+- Nombres: Máximo 3 palabras sugerido, renderizado en Serif.
+- Slugs: Generados automáticamente en minúsculas y sin espacios desde el nombre.
+
+Próximas Implementaciones:
+- Carga directa a Cloudinary desde el formulario (actualmente manual vía URL).
+- Gestión de inventario avanzado por categorías.

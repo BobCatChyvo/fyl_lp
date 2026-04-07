@@ -43,5 +43,13 @@ export function useAuth() {
     }
   };
 
-  return { user, loading, loginWithGoogle, logout };
+  const isAdmin = (userEmail: string | null) => {
+    const authorizedEmails = [
+      "betty.mtz2013@gmail.com",
+      "freeesa.lavanda@gmail.com"
+    ];
+    return userEmail ? authorizedEmails.includes(userEmail) : false;
+  };
+
+  return { user, loading, loginWithGoogle, logout, isAdmin: isAdmin(user?.email || null) };
 }

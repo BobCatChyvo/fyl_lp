@@ -32,21 +32,31 @@ Es obligatorio listar los alérgenos críticos para la seguridad del cliente:
 
 ---
 
-## 🛠️ Estructura de Datos (Referencia Técnica)
-Al añadir un nuevo producto en `src/data/products.ts`, sigue esta interfaz:
+## 🛠️ Estructura de Datos (Referencia Técnica en Firestore)
+Los productos se gestionan desde el **Panel de Administración** y se almacenan en la colección `products` de Firestore. La interfaz (`src/types/index.ts`) y el formulario aseguran la siguiente estructura:
 
 ```typescript
 {
-  id: 'unique-id',       // Identificador único (ej: p5)
-  slug: 'nombre-url',    // Para futuras URLs
-  name: 'Nombre Elegante',
-  description: 'Relato del sabor...',
-  price: 00.00,
-  category: 'categoria', // pasteles | bolleria | postres | cafe
-  imageUrl: '/images/test.png',
-  isFeatured: true/false,
-  allergens: ['Lácteos', 'Gluten']
+  id: string;            // Generado por Firestore
+  slug: string;          // Generado automáticamente en minúsculas (ej: tarta-signature)
+  name: string;          // Nombre artesanal (Mínimo 3 caracteres)
+  description: string;   // Descripción Sensorial (Mínimo 60, Máximo 120 caracteres)
+  price: number;         // Valor numérico (ej: 12.50)
+  category: string;      // diseños | bolleria | reposteria | postres | cafe
+  imageUrl: string;      // URL de Cloudinary o ruta /images/ (Debe ser HTTPS)
+  isFeatured: boolean;   // Define si aparece en la galería destacada
+  allergens: string[];   // Lista de alérgenos seleccionados
+  createdAt: Timestamp;  // Fecha de creación de la pieza
+  updatedAt: Timestamp;  // Última modificación sincronizada
 }
 ```
+
+## ✅ Validación de Calidad (Reglas del Sistema)
+El sistema denegará la creación de una pieza si no cumple con:
+1. **Nombre Artesanal:** Obligatorio y conciso (máximo 3 palabras sugerido).
+2. **Descripción Mínima:** Si el relato tiene menos de **60 caracteres**, el sistema indicará cuántos faltan para completar la experiencia sensorial.
+3. **Imágenes:** Solo se aceptan URLs válidas (HTTPS) o rutas locales verificadas.
+4. **Categorías:** Debes asignar una de las secciones oficiales (Diseños, Repostería, Bollería, etc.).
+
 ---
-*Última actualización: 4 de Abril de 2026*
+*Última actualización: 6 de Abril de 2026 - Sincronización con Firebase v2*

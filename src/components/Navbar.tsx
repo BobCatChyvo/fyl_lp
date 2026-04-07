@@ -6,15 +6,13 @@ import Link from "next/link";
 import Image from "next/image";
 import CartDrawer from "./CartDrawer";
 import { getImagePath } from "@/lib/utils";
+import { useAuth } from "@/lib/firebase/auth";
+import { ShieldCheck } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { user, isAdmin } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
-
-  // Si estamos en la página de administración, no mostramos el Navbar global
-  if (pathname === "/admin") return null;
-  
-
 
   // Efecto que oscurece el Navbar si el usuario baja
   useEffect(() => {
@@ -24,6 +22,9 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Si estamos en la página de administración, no mostramos el Navbar global
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <nav
@@ -52,6 +53,16 @@ export default function Navbar() {
           <Link href="/about" className="hover:text-secondary transition-colors border-b-2 border-transparent hover:border-secondary pb-1">
             Nosotros
           </Link>
+          
+          {isAdmin && (
+            <Link 
+              href="/admin" 
+              className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-500 hover:bg-rose-500 hover:text-white transition-all"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Admin</span>
+            </Link>
+          )}
         </div>
 
         {/* Botón Carrito / Visor Desplegable */}

@@ -1,4 +1,4 @@
-export type ProductCategory = 'pasteles' | 'bolleria' | 'postres' | 'cafe';
+export type ProductCategory = 'diseños' | 'reposteria' | 'bolleria' | 'postres' | 'cafe';
 
 export interface Product {
     id: string;

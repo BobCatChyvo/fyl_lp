@@ -101,7 +101,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               {product.price.toFixed(2)}
             </span>
           </div>
-          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-bold">
+          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-black italic">
             {product.category}
           </p>
         </div>

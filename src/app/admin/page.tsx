@@ -9,9 +9,90 @@ import Link from "next/link";
 import Image from "next/image";
 import { testFirebaseConnection } from "@/lib/firebase/config";
 import { getImagePath } from "@/lib/utils";
+import { useAuth } from "@/lib/firebase/auth";
+import { LogOut, Lock } from "lucide-react";
 
 export default function AdminPage() {
+  const { user, loading, loginWithGoogle, logout, isAdmin } = useAuth();
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#0d1117] flex items-center justify-center">
+        <div className="text-white/20 animate-pulse font-black uppercase tracking-[0.5em] text-[10px]">
+          Verificando Acceso...
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <main className="min-h-screen bg-[#0d1117] text-white flex items-center justify-center relative overflow-hidden">
+        {/* Background Decor */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-rose-500/10 rounded-full blur-[140px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-blue-500/10 rounded-full blur-[140px]" />
+        </div>
+
+        <div className="relative z-10 w-full max-w-md p-8 bg-white/[0.02] border border-white/5 backdrop-blur-3xl rounded-[40px] text-center shadow-2xl">
+          <div className="w-20 h-20 bg-rose-500/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-rose-500/20">
+            <Lock className="w-8 h-8 text-rose-500" />
+          </div>
+          <h1 className="font-serif text-4xl font-bold mb-4 italic">Administración</h1>
+          <p className="text-white/40 text-xs font-medium tracking-wide leading-relaxed mb-10 max-w-[280px] mx-auto">
+            Acceso restringido para el personal de <span className="text-white">FyL Pastelería</span>. Por favor inicia sesión para continuar.
+          </p>
+          
+          <button 
+            onClick={loginWithGoogle}
+            className="w-full py-5 rounded-2xl bg-white text-black text-[10px] font-black uppercase tracking-[0.2em] hover:bg-rose-500 hover:text-white transition-all transform active:scale-95 flex items-center justify-center gap-3"
+          >
+            Iniciar Sesión con Google
+          </button>
+          
+          <Link 
+            href="/"
+            className="inline-block mt-8 text-[9px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white transition-colors"
+          >
+            ← Volver a la Tienda
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  // Si el usuario está logueado pero no es admin
+  if (!isAdmin) {
+    return (
+      <main className="min-h-screen bg-[#0d1117] text-white flex items-center justify-center relative overflow-hidden">
+        <div className="relative z-10 w-full max-w-md p-8 bg-rose-500/5 border border-rose-500/10 backdrop-blur-3xl rounded-[40px] text-center shadow-2xl">
+          <div className="w-20 h-20 bg-rose-500/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-rose-500/20">
+            <Lock className="w-8 h-8 text-rose-500" />
+          </div>
+          <h1 className="font-serif text-3xl font-bold mb-4 italic text-rose-500">Acceso Denegado</h1>
+          <p className="text-white/40 text-xs font-medium tracking-wide leading-relaxed mb-10">
+            El correo <span className="text-white">{user.email}</span> no tiene permisos de administrador.
+          </p>
+          
+          <button 
+            onClick={logout}
+            className="w-full py-5 rounded-2xl bg-white/5 border border-white/10 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-rose-500 hover:text-white transition-all transform active:scale-95"
+          >
+            Cerrar Sesión e Intentar con otro
+          </button>
+          
+          <Link 
+            href="/"
+            className="inline-block mt-8 text-[9px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white transition-colors"
+          >
+            ← Volver a la Tienda
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
   const handleTest = async () => {
     console.log("🔄 Iniciando prueba de conexión con Firebase...");
     const res = await testFirebaseConnection();
@@ -59,13 +140,13 @@ export default function AdminPage() {
         </div>
         
         <div className="flex items-center gap-6">
-          <Link 
-            href="/"
-            className="group flex items-center gap-2 px-4 lg:px-6 py-2.5 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 hover:border-rose-500/20 transition-all active:scale-95"
+          <button 
+            onClick={logout}
+            className="px-6 py-2.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-500 hover:bg-rose-500 hover:text-white transition-all active:scale-95 flex items-center gap-2"
           >
-            <span className="text-[8px] lg:text-[9px] font-black uppercase tracking-[0.3em] text-white/40 group-hover:text-white transition-colors">Regresar a Tienda</span>
-            <ExternalLink className="w-3.5 h-3.5 text-white/20 group-hover:text-rose-500 transition-colors" />
-          </Link>
+            <span className="text-[8px] font-black uppercase tracking-[0.3em]">Finalizar Sesión</span>
+            <LogOut className="w-3.5 h-3.5" />
+          </button>
         </div>
       </nav>
 

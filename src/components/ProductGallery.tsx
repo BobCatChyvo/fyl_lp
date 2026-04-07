@@ -42,7 +42,7 @@ export default function ProductGallery({ categoryFilter, featuredOnly }: Product
             name: data.name || "Sin nombre",
             price: Number(data.price) || 0,
             description: data.description || "",
-            category: data.category || "pasteles",
+            category: data.category || "diseños",
             imageUrl: data.image || data.imageUrl || "/placeholder.jpg",
             slug: data.slug || doc.id,
             isFeatured: data.isFeatured || false,

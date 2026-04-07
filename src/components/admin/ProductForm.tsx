@@ -22,6 +22,8 @@ export default function ProductForm({ onSuccess, productToEdit }: ProductFormPro
   const [isFeatured, setIsFeatured] = useState(false);
   const [selectedAllergens, setSelectedAllergens] = useState<string[]>([]);
   const [slug, setSlug] = useState("");
+  const [formError, setFormError] = useState<string | null>(null);
+  const [formSuccess, setFormSuccess] = useState<string | null>(null);
 
   // Al editar, cargamos los estados internos
   useEffect(() => {
@@ -62,9 +64,43 @@ export default function ProductForm({ onSuccess, productToEdit }: ProductFormPro
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
+    const name = formData.get("name") as string;
+    const price = Number(formData.get("price"));
+    const description = formData.get("description") as string;
+    const category = formData.get("category");
+    const imageUrl = formData.get("imageUrl") as string;
+
+    // Reset feedback
+    setFormError(null);
+    setFormSuccess(null);
+
+    // Validation
+    if (!name || name.trim().length < 3) {
+      setFormError("El nombre es obligatorio y debe tener al menos 3 caracteres.");
+      setLoading(false);
+      return;
+    }
+
+    if (!price || price <= 0) {
+      setFormError("El precio debe ser un número positivo.");
+      setLoading(false);
+      return;
+    }
+
+    if (!description || description.trim().length < 60) {
+      setFormError(`La descripción es muy corta. Faltan ${60 - (description?.trim().length || 0)} caracteres más para alcanzar el mínimo sensorial.`);
+      setLoading(false);
+      return;
+    }
+
+    if (!imageUrl || !imageUrl.startsWith("http")) {
+      setFormError("Debes proporcionar una URL válida para la imagen.");
+      setLoading(false);
+      return;
+    }
     
     if (!db) {
-      alert("Error crítico: No se puede conectar con Firebase. Asegúrate de haber configurado los 'Secrets' en GitHub Settings.");
+      setFormError("Error crítico: No se puede conectar con Firebase.");
       setLoading(false);
       return;
     }
@@ -90,15 +126,17 @@ export default function ProductForm({ onSuccess, productToEdit }: ProductFormPro
           createdAt: serverTimestamp(),
         });
       }
+      setFormSuccess(productToEdit ? "¡Producto actualizado con éxito!" : "¡Producto creado con éxito!");
       onSuccess();
       if (!productToEdit) {
         (e.target as HTMLFormElement).reset();
         setSelectedAllergens([]);
         setIsFeatured(true);
+        setSlug("");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error en Firebase:", error);
-      alert("Error al guardar. Revisa la consola.");
+      setFormError(`Error al guardar: ${error.message || "Algo salió mal"}`);
     } finally {
       setLoading(false);
     }
@@ -117,6 +155,20 @@ export default function ProductForm({ onSuccess, productToEdit }: ProductFormPro
           {productToEdit ? "Redefinir Registro" : "Nueva Creación"}
         </h3>
       </header>
+
+      {/* Notifications */}
+      {(formError || formSuccess) && (
+        <div className={`p-4 rounded-2xl border flex items-center gap-3 animate-in fade-in duration-300 ${
+          formError 
+            ? "bg-rose-500/10 border-rose-500/20 text-rose-500" 
+            : "bg-emerald-500/10 border-emerald-500/20 text-emerald-500"
+        }`}>
+          <div className={`w-2 h-2 rounded-full ${formError ? "bg-rose-500" : "bg-emerald-500"} animate-pulse`} />
+          <p className="text-[11px] font-black uppercase tracking-widest leading-relaxed">
+            {formError || formSuccess}
+          </p>
+        </div>
+      )}
 
       {/* Custom Tabs Navigation */}
       <div className="flex border-b border-white/5 relative">
@@ -211,13 +263,13 @@ export default function ProductForm({ onSuccess, productToEdit }: ProductFormPro
                 <div className="relative">
                   <select 
                     name="category"
-                    defaultValue={productToEdit?.category || "pasteles"}
+                    defaultValue={productToEdit?.category || "diseños"}
                     className="w-full h-16 rounded-2xl bg-white/[0.03] border border-white/5 px-5 text-sm text-white focus:bg-white/[0.07] outline-none transition-all appearance-none cursor-pointer"
                   >
-                    <option value="pasteles">Pasteles Premium</option>
-                    <option value="bolleria">Bollería de Autor</option>
-                    <option value="postres">Postres Individuales</option>
-                    <option value="cafe">Cafetería & Botánicos</option>
+                    <option value="diseños">Diseños</option>
+                    <option value="reposteria">Repostería</option>
+                    <option value="bolleria">Bollería</option>
+                    <option value="cafe">Café</option>
                   </select>
                   <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
                     <Plus className="w-4 h-4 rotate-45" />
