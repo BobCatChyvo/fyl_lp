@@ -18,37 +18,38 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [showDesc, setShowDesc] = useState(false);
 
   return (
-    <Card className="overflow-hidden bg-background border-oro/20 group hover:border-oro/50 transition-all duration-500 shadow-xl relative h-full flex flex-col rounded-xl">
+    <Card className="overflow-hidden bg-white/70 glass-light border-accent group hover:border-primary/30 transition-all duration-700 shadow-premium relative h-full flex flex-col rounded-[2rem]">
       {/* Botón de información / cerrar descripción */}
       <button 
         onClick={() => setShowDesc(!showDesc)}
-        className="absolute top-4 right-4 z-20 bg-background/60 backdrop-blur-md p-2 rounded-full text-oro hover:bg-oro hover:text-white transition-all border border-oro/30 shadow-sm"
+        className="absolute top-6 right-6 z-20 bg-white/40 backdrop-blur-xl p-2.5 rounded-full text-foreground hover:bg-primary hover:text-white transition-all border border-black/5 shadow-sm"
         title={showDesc ? "Cerrar descripción" : "Más información"}
       >
-        {showDesc ? <X className="w-5 h-5" /> : <Info className="w-5 h-5" />}
+        {showDesc ? <X className="w-4 h-4" /> : <Info className="w-4 h-4" />}
       </button>
 
-      {/* Capa de descripción (Efecto Vanish) - Light Theme Glassmorphism */}
+      {/* Capa de descripción (Aura Floral Edition) */}
       <div 
-        className={`absolute inset-0 z-10 bg-background/90 backdrop-blur-xl p-8 flex flex-col justify-center transition-all duration-700 ease-in-out ${
-          showDesc ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
+        className={`absolute inset-0 z-10 bg-white/95 backdrop-blur-2xl p-10 flex flex-col justify-center transition-all duration-700 ease-in-out ${
+          showDesc ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
         }`}
       >
-        <h4 className="font-serif text-2xl font-bold text-foreground mb-4 border-b border-oro/30 pb-3">
+        <h4 className="font-serif text-3xl font-bold text-foreground mb-4">
           {product.name}
         </h4>
-        <p className="text-muted-foreground italic leading-relaxed mb-8 text-sm">
-          &quot;{product.description}&quot;
+        <div className="h-[1px] w-12 bg-primary mb-6" />
+        <p className="text-muted-foreground/80 leading-relaxed mb-8 text-sm font-medium">
+          {product.description}
         </p>
         
         {product.allergens && (
-          <div className="space-y-3">
-            <span className="text-[10px] uppercase tracking-[0.2em] text-oro font-bold">Alérgenos Presentes:</span>
+          <div className="space-y-4">
+            <span className="text-[9px] uppercase tracking-[0.3em] text-oro font-black">Alérgenos:</span>
             <div className="flex flex-wrap gap-2">
               {product.allergens.map((allergen) => (
                 <span 
                   key={allergen} 
-                  className="text-[9px] uppercase tracking-widest bg-oro/5 px-3 py-1 rounded-full border border-oro/20 text-oro font-bold"
+                  className="text-[8px] uppercase tracking-widest bg-accent/30 px-4 py-1.5 rounded-full text-foreground/60 font-bold border border-black/5"
                 >
                   {allergen}
                 </span>
@@ -57,63 +58,62 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
-        <div className="mt-10 flex flex-col gap-3">
+        <div className="mt-12 flex flex-col gap-3">
           <Button 
             onClick={() => {
               addItem(product);
               setShowDesc(false);
             }}
-            className="w-full bg-primary hover:bg-primary/90 text-white gap-2 font-bold py-7 rounded-full shadow-lg shadow-primary/20 glow-primary transition-transform active:scale-95"
+            className="w-full bg-primary hover:bg-primary/90 text-white gap-3 font-bold py-8 rounded-full shadow-premium transition-all active:scale-95"
           >
-            <Plus className="w-5 h-5 transition-transform group-active:rotate-90" />
-            Añadir a la orden
+            <Plus className="w-4 h-4" />
+            <span className="text-xs uppercase tracking-widest">Añadir a la orden</span>
           </Button>
           
           <Button 
             variant="ghost" 
             onClick={() => setShowDesc(false)}
-            className="text-accent/60 hover:text-accent font-bold uppercase tracking-widest text-[10px] transition-colors"
+            className="text-foreground/40 hover:text-foreground font-black uppercase tracking-widest text-[9px] transition-colors"
           >
             Regresar
           </Button>
         </div>
       </div>
 
-      <div className="relative aspect-[4/5] overflow-hidden shrink-0">
+      <div className="relative aspect-square overflow-hidden shrink-0 m-4 rounded-[1.5rem]">
         <Image
           src={getImagePath(product.imageUrl)}
           alt={product.name}
           fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110 image-glow"
+          className="object-cover transition-transform duration-1000 group-hover:scale-110"
         />
-        {/* Overlay sutil rose gold */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
       </div>
       
-      <CardContent className="p-6 flex-grow flex flex-col justify-between">
-        <div className="space-y-2">
+      <CardContent className="p-8 pt-2 flex-grow flex flex-col justify-between">
+        <div className="space-y-4">
           <div className="flex justify-between items-start gap-4">
-            <h3 className="font-serif text-xl font-bold text-foreground leading-tight group-hover:text-primary transition-colors">
+            <h3 className="font-serif text-2xl font-bold text-foreground leading-tight group-hover:text-primary transition-colors">
               {product.name}
             </h3>
-            <span className="text-primary font-bold text-xl items-center flex gap-1 text-glow-primary">
-              <span className="text-xs opacity-50">$</span>
+            <span className="text-primary font-bold text-lg flex items-center gap-1">
+              <span className="text-[10px] opacity-40">$</span>
               {product.price.toFixed(2)}
             </span>
           </div>
-          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-black italic">
+          <p className="text-[8px] text-oro uppercase tracking-[0.4em] font-black">
             {product.category}
           </p>
         </div>
       </CardContent>
       
-      <CardFooter className="p-6 pt-0">
+      <CardFooter className="p-8 pt-0">
         <Button 
           onClick={() => addItem(product)}
-          className="w-full bg-background hover:bg-primary text-primary hover:text-white border-2 border-primary gap-3 font-bold py-7 rounded-full transition-all active:scale-[0.98] shadow-sm uppercase tracking-widest text-xs hover:glow-primary"
+          className="w-full bg-white hover:bg-primary text-primary hover:text-white border-2 border-primary/20 hover:border-primary gap-4 font-bold py-8 rounded-full transition-all active:scale-[0.98] shadow-sm uppercase tracking-widest text-[10px]"
         >
-          <Plus className="w-5 h-5" />
-          Añadir a la orden
+          <Plus className="w-4 h-4" />
+          Añadir
         </Button>
       </CardFooter>
     </Card>

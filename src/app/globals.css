@@ -4,43 +4,40 @@
 
 @layer base {
   :root {
-    --background: 247 18% 5%; /* #0A090D - Obsidiana */
-    --foreground: 48 22% 97%; /* #F9F8F4 - Lavanda/Hueso para lectura */
+    /* Aura Floral Theme Colors */
+    --background: 240 67% 98%; /* #F6F6FF - Lavanda ultra suave */
+    --foreground: 247 18% 5%; /* #0A090D - Obsidiana para texto */
     
-    --card: 247 18% 7%; /* Ligeramente más claro para elevación */
-    --card-foreground: 48 22% 97%;
+    --card: 0 0% 100%; /* Blanco puro para tarjetas */
+    --card-foreground: 247 18% 5%;
     
-    --popover: 247 18% 5%;
-    --popover-foreground: 48 22% 97%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 247 18% 5%;
     
-    --primary: 0 100% 60%; /* #FF3333 - Fresa Intenso */
+    --primary: 358 86% 42%; /* #CA0F14 - Rojo Fresa */
     --primary-foreground: 0 0% 100%;
     
     --secondary: 351 33% 58%; /* #B76E79 - Rose Gold */
     --secondary-foreground: 0 0% 100%;
     
-    --muted: 247 10% 12%;
-    --muted-foreground: 240 5% 75%;
+    --muted: 240 67% 90%;
+    --muted-foreground: 247 10% 40%;
     
     --accent: 240 67% 94%; /* #E6E6FA - Lavanda Aura */
-    --accent-foreground: 247 18% 5%;
+    --accent-foreground: 358 86% 42%;
     
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 247 10% 15%; 
-    --input: 247 10% 15%;
-    --ring: 0 100% 60%;
+    --border: 240 10% 90%; 
+    --input: 240 10% 90%;
+    --ring: 358 86% 42%;
     --radius: 1.25rem;
     
-    /* Variables personalizadas para metales */
+    /* Variables de acentos */
     --oro: 46 65% 52%;
     --platino: 200 5% 89%;
     --rose-gold: 351 33% 58%;
-    
-    /* Glow utilities */
-    --glow-primary: 0 100% 60% / 0.5;
-    --glow-accent: 240 67% 94% / 0.2;
   }
 }
 
@@ -49,48 +46,45 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
   }
 }
 
-/* Utilerías personalizadas para gradientes metálicos */
+/* Gradientes Metálicos Premium */
 .bg-gold-gradient {
-  background: linear-gradient(135deg, #D4AF37 0%, #F9E29B 50%, #D4AF37 100%);
+  background: linear-gradient(135deg, #FFD700 0%, #FFFACD 50%, #FFD700 100%);
 }
 .bg-rose-gradient {
   background: linear-gradient(135deg, #B76E79 0%, #E6B9BC 50%, #B76E79 100%);
 }
-.bg-platinum-gradient {
-  background: linear-gradient(135deg, #E5E4E2 0%, #FFFFFF 50%, #E5E4E2 100%);
+
+/* Glassmorphism LUMINOSO (Aura Floral Premium) */
+.glass-light {
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
 }
 
-/* Efectos de Brillo (Glow) */
-.glow-primary {
-  box-shadow: 0 0 20px -5px hsl(var(--primary) / 0.5);
-}
-.text-glow-primary {
-  text-shadow: 0 0 10px hsl(var(--primary) / 0.6);
-}
-
-/* Glassmorphism Oscuro Ultra Premium */
+/* Glassmorphism OSCURO (Mantenido para secciones especiales) */
 .glass-dark {
-  background: rgba(10, 9, 13, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(10, 9, 13, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Imagen con Brillo Perimetral (Fresa) */
-.image-glow {
-  filter: drop-shadow(0 0 15px hsl(var(--primary) / 0.3));
+/* Sombras Premium */
+.shadow-premium {
+  box-shadow: 0 20px 40px -15px rgba(202, 15, 20, 0.1);
 }
 
-/* Animaciones Globales */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
+/* Animaciones GSAP Helper Classes */
+.gsap-reveal {
+  opacity: 0;
+  transform: translateY(30px);
 }

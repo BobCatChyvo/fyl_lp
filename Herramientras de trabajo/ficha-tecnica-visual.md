@@ -1,29 +1,53 @@
-# Ficha Técnica de Identidad Visual (Edition: Eternal Dark)
+# Ficha Técnica de Identidad Visual: Fresa & Lavanda
 
-## 1. Colores de Comunicación (Impacto)
-| Color | Hexadecimal | Pantone (Aprox.) | Aplicación |
-| :--- | :--- | :--- | :--- |
-| **Fresa Intenso** | `#FF3333` | 199 C | Acciones principales, botones y logotipos |
-| **Lavanda Aura** | `#E6E6FA` | 2635 C | Fondos secundarios, textos de apoyo y acentos suaves |
-
-## 2. Color de Base (Lienzo Oscuro)
-| Color | Hexadecimal | CMYK | Notas |
-| :--- | :--- | :--- | :--- |
-| **Obsidiana Profunda** | `#0A090D` | 80, 70, 60, 90 | Fondo principal del 100% del sitio |
-| **Blanco Hueso** | `#F9F8F4` | 1, 1, 4, 0 | **Exclusivamente para tipografía** y legibilidad |
-
-## 3. Acentos Metálicos (Luz)
-| Metal | Hexadecimal | Pantone Ref. | Característica |
-| :--- | :--- | :--- | :--- |
-| **Oro Real** | `#D4AF37` | 871 C | Divisores, iconos y realces de lujo |
-| **Plata Platino** | `#E5E4E2` | 877 C | Detalles técnicos y bordes de UI |
-| **Rose Gold** | `#B76E79` | 9063 C | Toques orgánicos y calidez |
+Esta ficha técnica define los dos universos visuales del proyecto. Ambos comparten la misma paleta cromática pero varían radicalmente en su jerarquía y aplicación para adaptarse a diferentes contextos de marca.
 
 ---
 
-## Directrices de Uso (Modo Oscuro)
-*   **Fondo:** El sitio es **100% Oscuro** para permitir que el color Fresa "brille" (glow effect).
-*   **Contraste:** La tipografía principal usa **Blanco Hueso** sobre el fondo Obsidiana.
-*   **Acentos:** El **Lavanda** se aplica con opacidades bajas o efectos de desenfoque para crear profundidad.
-*   **Metales:** Actúan como filamentos de luz en una habitación oscura. Uso estratégico en líneas finas.
-*   **Profundidad:** Uso intensivo de glassmorphism oscuro (capas negras translúcidas con blur) para jerarquía visual.
+## 🎨 Paleta Cromática Base (Core Colors)
+
+| Color | Hexadecimal | Uso Conceptual |
+| :--- | :--- | :--- |
+| **Rojo Fresa** | `#CA0F14` | Pasión, sabor, acción (CTAs). |
+| **Lavanda** | `#E6E6FA` | Elegancia, calma, fragancia (Atmósfera). |
+| **Obsidiana** | `#0A090D` | Profundidad, lujo, autoridad (Estructura). |
+| **Platino** | `#D9D9D9` | Claridad, tecnología, finura (Detalles). |
+
+---
+
+## 🌑 Edición I: Eternal Dark (Classic Premium)
+*Enfoque en el misterio, el lujo nocturno y el protagonismo del "glow".*
+
+### Directrices de Aplicación:
+*   **Fondo:** 100% **Obsidiana Profunda**. Crea un lienzo infinito donde los productos "vibran".
+*   **Tipografía:** Principalmente **Platino** para máxima legibilidad y un toque "silver" de gama alta.
+*   **Impacto Visual:** El **Rojo Fresa** se aplica con efectos de iluminación externa (glow) y sombras profundas.
+*   **Atmósfera:** El **Lavanda** se usa con opacidades bajas (10-20%) para crear halos de luz y fondos de cristal esmerilado oscuro (*Dark Glassmorphism*).
+*   **Metales:** El **Oro Real** y **Bronce** actúan como filamentos de luz que cortan la oscuridad.
+
+---
+
+## 🌸 Edición II: Aura Floral (Luminous Premium)
+*Enfoque en la frescura, la luz natural y la sofisticación editorial.*
+
+### Directrices de Aplicación:
+*   **Fondo:** Predominio de **Lavanda** degradado hacia blanco crema. Una sensación de amplitud y limpieza.
+*   **Tipografía:** El **Obsidiana** toma el control como color de texto. Títulos en serif negra para un look de revista de lujo.
+*   **Impacto Visual:** El **Rojo Fresa** es un punto de color sólido y vibrante. Sin glow, pero con bordes definidos y presencia audaz.
+*   **Atmósfera:** Uso de capas blancas translúcidas (*White Glassmorphism*) para dar profundidad sin oscurecer.
+*   **Metales:** El **Rose Gold** es el protagonista metálico aquí, aportando un toque orgánico y cálido.
+
+---
+
+## 💎 Acentos Metálicos (Compartidos)
+
+| Metal | Hexadecimal | Uso Recomendado |
+| :--- | :--- | :--- |
+| **Oro Real** | `#FFD700` | Iconos de navegación, sellos de calidad y divisores finos. |
+| **Bronce** | `#CD7F32` | Sombras cálidas, botones secundarios y marcos. |
+| **Rose Gold** | `#B76E79` | Detalles florales, acentos en tipografía itálica y micro-interacciones. |
+
+---
+
+## 🛠️ Regla de Oro: Coherencia
+Independientemente del tema elegido, la transición entre ambos debe sentirse natural. Se recomienda el uso del tema **Aura Floral** para la navegación diurna/informativa y **Eternal Dark** para secciones de productos "Signature" o experiencias exclusivas de catering nocturno.
