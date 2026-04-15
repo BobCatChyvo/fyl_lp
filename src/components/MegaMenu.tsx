@@ -49,44 +49,44 @@ export function MegaMenu() {
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-[400px] gap-3 p-6 md:w-[500px] md:grid-cols-2 lg:w-[600px] glass-light border-none shadow-premium animate-in fade-in zoom-in-95 duration-500 rounded-2xl relative z-[70] overflow-hidden">
-              <li className="row-span-3">
-                <NavigationMenuLink asChild>
-                  <a
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-primary/10 to-primary/5 p-6 no-underline outline-none focus:shadow-md group overflow-hidden relative"
-                    href="/catalog"
+                <li className="row-span-3">
+                  <NavigationMenuLink asChild>
+                    <a
+                      className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-primary/10 to-primary/5 p-6 no-underline outline-none focus:shadow-md group overflow-hidden relative"
+                      href="/catalog"
+                    >
+                      <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="z-10 mb-2 mt-4 font-serif text-2xl font-bold text-primary">
+                        Aura Floral
+                      </div>
+                      <p className="z-10 text-xs leading-tight text-foreground/70">
+                        Explora el universo completo de nuestra nueva colección luminosa.
+                      </p>
+                    </a>
+                  </NavigationMenuLink>
+                </li>
+                {components.map((component) => (
+                  <ListItem
+                    key={component.title}
+                    title={component.title}
+                    href={component.href}
                   >
-                    <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="z-10 mb-2 mt-4 font-serif text-2xl font-bold text-primary">
-                      Aura Floral
-                    </div>
-                    <p className="z-10 text-xs leading-tight text-foreground/70">
-                      Explora el universo completo de nuestra nueva colección luminosa.
-                    </p>
-                  </a>
-                </NavigationMenuLink>
-              </li>
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+                    {component.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
 
-        <NavigationMenuItem>
-          <Link href="/about" legacyBehavior passHref>
-            <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "bg-transparent hover:bg-transparent focus:bg-transparent font-sans font-black text-foreground/80 tracking-[0.3em] text-[9px] uppercase transition-all hover:text-primary")}>
-              Nosotros
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+          <NavigationMenuItem>
+            <Link href="/about" legacyBehavior passHref>
+              <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "bg-transparent hover:bg-transparent focus:bg-transparent font-sans font-black text-foreground/80 tracking-[0.3em] text-[9px] uppercase transition-all hover:text-primary")}>
+                Nosotros
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
     </StoreHydration>
   );
 }
