@@ -22,19 +22,29 @@ const components: { title: string; href: string; description: string }[] = [
     description: "Nuestras creaciones más icónicas con aromas botánicos.",
   },
   {
-    title: "Pastelería de Temporada",
+    title: "Temporada",
     href: "/catalog?category=seasonal",
     description: "Ingredientes frescos seleccionados según la estación.",
   },
   {
-    title: "Experiencias de Catering",
+    title: "Catering",
     href: "/catalog?category=catering",
     description: "Servicio exclusivo para eventos y celebraciones privadas.",
   },
   {
-    title: "Cajas de Regalo",
+    title: "Regalos",
     href: "/catalog?category=gifts",
     description: "Detalles artesanales envueltos en elegancia.",
+  },
+  {
+    title: "Clásicos",
+    href: "/catalog?category=diseños",
+    description: "Nuestra repostería tradicional de alta gama.",
+  },
+  {
+    title: "Bollería",
+    href: "/catalog?category=bolleria",
+    description: "Piezas horneadas con mantequilla premium.",
   },
 ];
 
@@ -51,7 +61,7 @@ export function MegaMenu() {
               <ul className="grid w-[400px] gap-3 p-6 md:w-[500px] md:grid-cols-2 lg:w-[600px] glass-light border-none shadow-premium animate-in fade-in zoom-in-95 duration-500 rounded-2xl relative z-[70] overflow-hidden">
                 <li className="row-span-3">
                   <NavigationMenuLink asChild>
-                    <a
+                    <Link
                       className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-primary/10 to-primary/5 p-6 no-underline outline-none focus:shadow-md group overflow-hidden relative"
                       href="/catalog"
                     >
@@ -62,7 +72,7 @@ export function MegaMenu() {
                       <p className="z-10 text-xs leading-tight text-foreground/70">
                         Explora el universo completo de nuestra nueva colección luminosa.
                       </p>
-                    </a>
+                    </Link>
                   </NavigationMenuLink>
                 </li>
                 {components.map((component) => (
@@ -92,14 +102,14 @@ export function MegaMenu() {
 }
 
 const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
+  HTMLAnchorElement,
+  React.ComponentPropsWithoutRef<typeof Link>
+>(({ className, title, children, href, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
-        <a
-          ref={ref}
+        <Link
+          href={href}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-primary/5 hover:text-primary focus:bg-primary/5 focus:text-primary",
             className
@@ -110,7 +120,7 @@ const ListItem = React.forwardRef<
           <p className="line-clamp-2 text-[10px] leading-snug text-muted-foreground">
             {children}
           </p>
-        </a>
+        </Link>
       </NavigationMenuLink>
     </li>
   );

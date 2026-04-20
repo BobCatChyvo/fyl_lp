@@ -5,35 +5,41 @@
 @layer base {
   :root {
     /* Aura Floral Theme Colors */
-    --background: 240 67% 98%; /* #F6F6FF - Lavanda ultra suave */
-    --foreground: 247 18% 5%; /* #0A090D - Obsidiana para texto */
-    
-    --card: 0 0% 100%; /* Blanco puro para tarjetas */
+    --background: 240 67% 98%;
+    /* #F6F6FF - Lavanda ultra suave */
+    --foreground: 247 18% 5%;
+    /* #0A090D - Obsidiana para texto */
+
+    --card: 0 0% 100%;
+    /* Blanco puro para tarjetas */
     --card-foreground: 247 18% 5%;
-    
+
     --popover: 0 0% 100%;
     --popover-foreground: 247 18% 5%;
-    
-    --primary: 358 86% 42%; /* #CA0F14 - Rojo Fresa */
+
+    --primary: 358 86% 42%;
+    /* #CA0F14 - Rojo Fresa */
     --primary-foreground: 0 0% 100%;
-    
-    --secondary: 351 33% 58%; /* #B76E79 - Rose Gold */
+
+    --secondary: 351 33% 58%;
+    /* #B76E79 - Rose Gold */
     --secondary-foreground: 0 0% 100%;
-    
+
     --muted: 240 67% 90%;
     --muted-foreground: 247 10% 40%;
-    
-    --accent: 240 67% 94%; /* #E6E6FA - Lavanda Aura */
+
+    --accent: 240 67% 94%;
+    /* #E6E6FA - Lavanda Aura */
     --accent-foreground: 358 86% 42%;
-    
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 240 10% 90%; 
+    --border: 240 10% 90%;
     --input: 240 10% 90%;
     --ring: 358 86% 42%;
     --radius: 1.25rem;
-    
+
     /* Variables de acentos */
     --oro: 46 65% 52%;
     --platino: 200 5% 89%;
@@ -45,10 +51,17 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground antialiased;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif;
   }
 }
@@ -57,6 +70,7 @@
 .bg-gold-gradient {
   background: linear-gradient(135deg, #FFD700 0%, #FFFACD 50%, #FFD700 100%);
 }
+
 .bg-rose-gradient {
   background: linear-gradient(135deg, #B76E79 0%, #E6B9BC 50%, #B76E79 100%);
 }
@@ -87,4 +101,62 @@
 .gsap-reveal {
   opacity: 0;
   transform: translateY(30px);
+}
+
+/* Custom Scrollbar Premium (Aura Floral) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--oro) / 0.3);
+  border-radius: 10px;
+  border: 2px solid var(--background);
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--oro) / 0.6);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(46 65% 52% / 0.3) transparent;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Lenis Recommended CSS */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }

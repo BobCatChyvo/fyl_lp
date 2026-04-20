@@ -28,9 +28,10 @@ export default function ProductGallery({ categoryFilter, featuredOnly }: Product
       // Consulta en tiempo real a la colección "products"
       let q = query(collection(db, "products"));
       
-      // Aplicar filtros si existen
-      if (categoryFilter) {
-        // Nota: Si usas múltiples campos de filtro + orderBy, FireStore podría requerir un índice manual
+      // Aplicar filtros si existen y no son 'todas'
+      const isFilterAll = !categoryFilter || categoryFilter === ("todas" as any);
+      
+      if (!isFilterAll) {
         q = query(collection(db, "products"), where("category", "==", categoryFilter));
       }
 

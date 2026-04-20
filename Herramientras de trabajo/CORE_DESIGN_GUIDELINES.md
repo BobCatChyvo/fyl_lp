@@ -1,5 +1,5 @@
 # Core Design Guidelines: Aura Floral Edition
-*Última actualización: 2026-04-15*
+*Última actualización: 2026-04-20*
 
 Este documento es el "Escudo de Identidad" de Fresa & Lavanda. Define las reglas inquebrantables de diseño y desarrollo para garantizar que el proyecto mantenga su estatus **Premium, Editorial y Luminoso**.
 
@@ -45,23 +45,33 @@ No usar colores ad-hoc. Usar exclusivamente las variables de Tailwind configurad
 
 ---
 
-## 🛠️ 5. Reglas Técnicas de Implementación (Blindaje)
-Para mantener la integridad técnica, toda nueva implementación debe seguir estas reglas:
+## 🛠️ 5. Arquitectura de Página (Static Export)
+Para asegurar que el sitio funcione perfectamente en GitHub Pages manteniendo dinamismo:
 
-1.  **Protección de Hidratación:** Cualquier componente que use lógica de cliente (`localStorage`, `auth state`, `window`) debe envolverse en `<StoreHydration>` o usar el hook `isMounted` para evitar desajustes visuales (FOUC).
-2.  **Imágenes:** Siempre utilizar el helper `getImagePath()` para asegurar compatibilidad con el `basePath` de GitHub Pages.
-3.  **Z-Indexing:**
-    *   Navbar: `z-50`
-    *   Mega Menú Viewport/Content: `z-[60]` ó `z-[70]`
-    *   Modales: `z-[100]`
-4.  **No Inline Styles:** Queda prohibido el uso de `style={{...}}` a menos que sea para valores dinámicos de GSAP. Todo debe ir vía Tailwind o `globals.css`.
+1.  **Split Component Pattern:** Las páginas dinámicas (ej: `[slug]`) deben ser Server Components que exporten `generateStaticParams` para pre-renderizar las rutas. El contenido interactivo debe delegarse a un `StorytellingClient` componente hermano.
+2.  **Safety Checks:** Siempre validar la existencia de `db` (Firebase) antes de realizar peticiones en el cliente para evitar errores de inicialización.
+3.  **URL Sync:** Los filtros de catálogo deben sincronizarse con la URL (`?category=...`) para permitir navegación directa desde el Mega Menú.
 
 ---
 
-## ⚡ 6. Movimiento (Smooth Experience)
+## ⚡ 6. Movimiento y Scroll (Aura Scroll)
 *   **Scroll:** El `SmoothScrollProvider` basado en Lenis debe estar siempre activo en el `layout.tsx`.
-*   **Transitions:** La transición de la Navbar al hacer scroll debe ser de exactamente `700ms` con `ease-in-out` para transmitir "peso" y calidad.
+*   **Scrollbar Global:** Se utiliza una barra de desplazamiento minimalista con color `--oro` (30% opacidad) y bordes redondeados. Nunca usar la barra por defecto del sistema.
+*   **Fade Indicators:** Todo contenedor con scroll horizontal (ej: Categorías) debe incluir gradientes laterales (`from-background to-transparent`) que indiquen visualmente que hay más contenido.
 
 ---
+
+## 📱 7. Mobile Premium Experience
+1.  **Mobile Menu:** En resoluciones menores a `md`, la navegación se transfiere a un `MobileMenu` basado en el componente `Sheet` (Radix), manteniendo la estética de cristal.
+2.  **Touch Targets:** Botones de acción deben tener una altura mínima de `48px` para facilitar la interacción táctil sin perder elegancia.
+
+---
+
+## 🧩 8. Coherencia de Categorías
+Las categorías deben estar sincronizadas entre `MegaMenu`, `MobileMenu` y `CatalogPage`. Lista oficial:
+*   *Signature, Temporada, Catering, Regalos, Clásicos, Bollería.*
+
+---
+
 > [!IMPORTANT]
 > **Criterio de Aceptación:** Si una nueva sección no se siente como una página de la revista *Vogue* o una boutique de París, el diseño debe ser rechazado y ajustado según estos lineamientos.

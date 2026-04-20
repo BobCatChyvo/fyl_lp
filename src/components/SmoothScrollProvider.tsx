@@ -9,7 +9,11 @@ interface SmoothScrollProviderProps {
   children: ReactNode;
 }
 
+import { usePathname } from "next/navigation";
+
 export default function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
+  const pathname = usePathname();
+  
   useEffect(() => {
     // Registrar ScrollTrigger con GSAP
     gsap.registerPlugin(ScrollTrigger);
@@ -25,6 +29,12 @@ export default function SmoothScrollProvider({ children }: SmoothScrollProviderP
       gsap.ticker.remove(update);
     };
   }, []);
+
+  const isAdmin = pathname?.startsWith("/admin");
+  
+  if (isAdmin) {
+    return <>{children}</>;
+  }
 
   return (
     <ReactLenis

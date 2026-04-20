@@ -259,17 +259,19 @@ export default function ProductForm({ onSuccess, productToEdit }: ProductFormPro
                 </div>
               </div>
               <div className="space-y-3">
-                <Label className="text-[11px] font-black uppercase tracking-widest text-white/50 ml-1">Categoría</Label>
+                <Label className="text-[11px] font-black uppercase tracking-widest text-white/50 ml-1">Colección / Categoría</Label>
                 <div className="relative">
                   <select 
                     name="category"
-                    defaultValue={productToEdit?.category || "diseños"}
+                    defaultValue={productToEdit?.category || "signature"}
                     className="w-full h-16 rounded-2xl bg-white/[0.03] border border-white/5 px-5 text-sm text-white focus:bg-white/[0.07] outline-none transition-all appearance-none cursor-pointer"
                   >
-                    <option value="diseños">Diseños</option>
-                    <option value="reposteria">Repostería</option>
+                    <option value="signature">Signature Collection</option>
+                    <option value="seasonal">Temporada</option>
+                    <option value="catering">Catering</option>
+                    <option value="gifts">Regalos</option>
+                    <option value="diseños">Clásicos</option>
                     <option value="bolleria">Bollería</option>
-                    <option value="cafe">Café</option>
                   </select>
                   <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
                     <Plus className="w-4 h-4 rotate-45" />
@@ -302,16 +304,16 @@ export default function ProductForm({ onSuccess, productToEdit }: ProductFormPro
         <div className={`space-y-8 animate-in fade-in slide-in-from-right-4 duration-500 ${activeTab !== 'exp' ? 'hidden' : ''}`}>
           <div className="space-y-3">
             <Label className="text-[11px] font-black uppercase tracking-widest text-white/50 ml-1 flex justify-between">
-              Descripción Sensorial
-              <span className="text-[10px] opacity-40 font-normal normal-case">60 - 120 caracteres</span>
+              Descripción Sensorial (Storytelling)
+              <span className="text-[10px] opacity-40 font-normal normal-case">Mín 60 - Sugerido 250+</span>
             </Label>
             <Textarea 
               name="description"
               defaultValue={productToEdit?.description}
-              className="bg-white/[0.03] border-white/5 min-h-[180px] rounded-[24px] p-5 text-sm leading-relaxed placeholder:text-white/10 focus:bg-white/[0.07] transition-all resize-none shadow-inner"
-              placeholder="Narra la experiencia botánica..."
+              className="bg-white/[0.03] border-white/5 min-h-[200px] rounded-[24px] p-5 text-sm leading-relaxed placeholder:text-white/10 focus:bg-white/[0.07] transition-all resize-none shadow-inner"
+              placeholder="Narra la experiencia botánica de esta pieza..."
               minLength={60}
-              maxLength={120}
+              maxLength={1000}
               required
             />
           </div>

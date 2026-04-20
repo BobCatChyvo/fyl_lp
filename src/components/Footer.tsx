@@ -11,7 +11,8 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   // Ocultar Footer en la consola de administración
-  if (pathname === "/admin") return null;
+  // Ocultar Footer en la consola de administración y en la vista exclusiva de producto
+  if (pathname?.startsWith("/admin") || (pathname?.startsWith("/catalog/") && pathname !== "/catalog/")) return null;
 
   return (
     <footer className="bg-background border-t border-border/50 mt-auto">
@@ -19,12 +20,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
           {/* Logo y Branding */}
           <div className="flex flex-col gap-8 items-center md:items-start text-center md:text-left">
-            <Link href="/" className="relative h-20 w-20 transition-transform hover:scale-105">
+            <Link href="/" className="relative h-32 w-32 transition-transform hover:scale-105 group">
               <Image 
                 src={getImagePath("/fyl_logo.png")} 
                 alt="Logo" 
                 fill 
-                className="object-contain"
+                className="object-contain transition-opacity group-hover:opacity-80 drop-shadow-lg"
               />
             </Link>
             <p className="text-muted-foreground max-w-xs leading-relaxed italic">

@@ -9,6 +9,7 @@ import { getImagePath } from "@/lib/utils";
 import { useAuth } from "@/lib/firebase/auth";
 import { ShieldCheck } from "lucide-react";
 import { MegaMenu } from "./MegaMenu";
+import { MobileMenu } from "./MobileMenu";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -36,12 +37,13 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex items-center justify-between">
-        <Link href="/" className="relative h-10 w-10 md:h-14 md:w-14 transition-transform hover:scale-110 active:scale-95">
+        <Link href="/" className="group relative h-12 w-12 md:h-20 md:w-20 transition-all duration-700">
+          <div className="absolute inset-0 bg-primary/5 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
           <Image
             src={getImagePath("/fyl_logo.png")}
             alt="FyL Logo"
             fill
-            className="object-contain"
+            className="object-contain drop-shadow-xl transition-all duration-700 group-hover:scale-105"
             priority
           />
         </Link>
@@ -61,8 +63,9 @@ export default function Navbar() {
           )}
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 md:gap-6">
           <CartDrawer />
+          <MobileMenu />
         </div>
       </div>
     </nav>
